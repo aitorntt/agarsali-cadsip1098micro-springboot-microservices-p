@@ -1,0 +1,8 @@
+spring:   
+   main:
+    allow-bean-definition-overriding: true      
+server:
+  port: ${SERVER_PORT:0}
+eureka:
+  client:
+    enabled: false

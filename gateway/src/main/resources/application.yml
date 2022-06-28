@@ -1,0 +1,57 @@
+server:
+  port:  8080     
+eureka:
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://${DISCOVERY_HOST:localhost}:${DISCOVERY_PORT:8761}/eureka/
+  instance:
+    prefer-ip-address: true
+management:
+  endpoints:
+    web:
+      exposure:
+        include: info,metrics,health,routes,refresh
+ribbon:
+  ReadTimeout: 20000
+  ConnectTimeout: 20000
+  
+spring:
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+      - id: rest
+        uri: lb://rest
+        predicates:
+        - Path=/backend/ValidateTypesRest_rm/**, /backend/ValidateListRest_rm/**, /backend/Smart_rm/**
+        filters:
+        - RewritePath=/backend/(?<segment>.*), /$\{segment}		
+      - id: externalcode
+        uri: lb://externalcode
+        predicates:
+        - Path=/backend/all-external-codes_ec/**
+        filters:
+        - RewritePath=/backend/(?<segment>.*), /$\{segment}		
+      - id: cruds
+        uri: lb://cruds
+        predicates:
+        - Path=/backend/UserCRUD/**, /backend/productCRUD/**
+        filters:
+        - RewritePath=/backend/(?<segment>.*), /$\{segment}		
+      - id: sqls
+        uri: lb://sqls
+        predicates:
+        - Path=/backend/delete-usuario-test/**, /backend/get-peliculas-menor5-hasta18/**, /backend/force-fail/**, /backend/validate-list/**, /backend/validate-types/**, /backend/get-usuarios-trans/**, /backend/insert-product-test/**, /backend/get-user-by-username/**, /backend/insert-genero-test/**, /backend/insert-user/**, /backend/delete-user/**, /backend/get-id-by-username/**, /backend/get-usuario/**, /backend/get-peliculas-all/**, /backend/get-peliculas-menor5/**, /backend/get-peliculas-mayor18/**, /backend/get-series-menor5/**, /backend/get-series-menor5-hasta18/**, /backend/get-series-mayor18/**, /backend/add-usuario/**, /backend/add-titulo/**, /backend/get-titulos/**, /backend/get-usuarios/**, /backend/delete-usuario-trans/**, /backend/add-usuario-trans/**, /backend/get-usuario-trans/**, /backend/save-price/**, /backend/show-products/**, /backend/get-generos/**, /backend/delete-usuario/**, /backend/delete-titulo/**, /backend/delete-product/**, /backend/get-types/**, /backend/add-type/**, /backend/get-type/**, /backend/validate-objects/**, /backend/delete-validate-types/**, /backend/delete-validate-objects/**, /backend/delete-validate-list/**, /backend/delete-type/**, /backend/delete-usuario-trans-by-name/**, /backend/add-valid-name/**, /backend/delete-names/**, /backend/get-list-usuarios/**, /backend/insert-type-product-test/**, /backend/delete-genero-test/**, /backend/delete-type-product-test/**, /backend/delete-titulos-test/**, /backend/delete-product-test/**, /backend/delete-user-test/**, /backend/delete-usuario-trans-test/**, /backend/insert-usuario-test/**, /backend/insert-usert-test/**, /backend/insert-usuario-trans-test/**, /backend/insert-titulos-test/**
+        filters:
+        - RewritePath=/backend/(?<segment>.*), /$\{segment}		
+      - id: composition
+        uri: lb://composition
+        predicates:
+        - Path=/backend/testingConditionalLoop_bc/**, /backend/testingIncrementalConfig_bc/**, /backend/testingTypes_bc/**, /backend/testingSimpleList_bc/**, /backend/loadData_bc/**, /backend/completeTestBackend_bc/**, /backend/testOtherComposition_bc/**, /backend/testingTransactional_bc/**, /backend/testingObjects_bc/**
+        filters:
+        - RewritePath=/backend/(?<segment>.*), /$\{segment}		

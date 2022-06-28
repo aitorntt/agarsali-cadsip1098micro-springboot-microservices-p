@@ -1,0 +1,26 @@
+server:
+  port: ${SERVER_PORT:0}  
+eureka:
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://${DISCOVERY_HOST:localhost}:${DISCOVERY_PORT:8761}/eureka/
+  instance:
+    hostname: admin
+    prefer-ip-address: true
+management:
+  endpoints:
+    web:
+      exposure:
+        include: info,metrics,health,routes
+spring:
+  boot:
+    admin:
+      context-path: /admin
+  security:
+    user:
+      name: ${ADMIN_SERVICE_USER}
+      password: ${ADMIN_SERVICE_PASSWORD}
+      roles:
+      - ADMIN

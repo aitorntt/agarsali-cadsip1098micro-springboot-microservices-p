@@ -1,0 +1,23 @@
+server:
+  port: ${SERVER_PORT:0}
+eureka:
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://${DISCOVERY_HOST:localhost}:${DISCOVERY_PORT:8761}/eureka/
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+    prefer-ip-address: true
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 40000
+        readTimeout: 40000
+        loggerLevel: basic
+management:
+  endpoints:
+    web:
+      exposure:
+        include: info,metrics,health,actuator,refresh

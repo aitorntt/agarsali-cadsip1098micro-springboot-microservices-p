@@ -1,0 +1,1 @@
+spring:  application:    name: adminmanagement:  endpoints:    web:      exposure:        include: refresheureka:  client:    registerWithEureka: true    fetchRegistry: true    serviceUrl:      defaultZone: http://${DISCOVERY_HOST:localhost}:${DISCOVERY_PORT:8761}/eureka/  instance:    hostname: admin    prefer-ip-address: true

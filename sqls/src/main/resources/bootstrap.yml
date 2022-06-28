@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: sqls
+  cloud:
+    config:
+     uri: http://${CONFIG_SERVER_URL:localhost}:${CONFIG_SERVER_PORT:8888}
+  main:
+    allow-bean-definition-overriding: true      
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh
+domain:
+  internal:
+    datasource:
+      username: ${DATABASE_USER}
+      password: ${DATABASE_PASS}
+      url: jdbc:mysql://${DATABASE_SERVER}/${DATABASE_DB}?useSSL=${USE_SSL}&requireSSL=${REQUIRE_SSL}&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&autoReconnect=true
+      schema: ${DATABASE_DB}
+      className: com.mysql.jdbc.Driver
+      connectionTimeout: 3000
+      maxLifetime: 3000
+      maxPoolSize: 10
+      ddlStrategy: none
+      dialect: org.hibernate.dialect.MySQLDialect
