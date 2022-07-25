@@ -21,5 +21,5 @@ public interface TestingTypesBcService {
       TestingTypesBcValidateTypesInTypeObjectDto typeObject)
       throws CadException;
 
-  public void executeDeleteAll() throws CadException;
+  public BackendResponse<?> executeDeleteAll() throws CadException;
 }

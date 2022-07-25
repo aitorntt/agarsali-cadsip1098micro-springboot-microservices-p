@@ -35,44 +35,6 @@ class UserCrudControllerTest {
   public static final String URI = "/UserCRUD";
 
   @Test
-  void findEntityGetUser() {
-    Long id = connect.createEmptyEntity();
-
-    GetUserCRUDPathVariableRequestDto pathVariableRequestDto =
-        GetUserCRUDPathVariableRequestDto.builder().id(id).build();
-
-    ResponseEntity<GetUserCRUDOkResponseResponseDto> response =
-        (ResponseEntity<GetUserCRUDOkResponseResponseDto>)
-            userCRUDController.getUser(pathVariableRequestDto);
-    Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
-    Assertions.assertNotNull(response.getBody().getOutputDomainEntity());
-  }
-
-  @Test
-  void updateEntityUpdateUser() {
-    Long id = connect.createEmptyEntity();
-
-    String username = "username";
-    String password = "password";
-    Integer edad = 1;
-    UpdateUserCRUDBodyRequestDto bodyRequestDto =
-        UpdateUserCRUDBodyRequestDto.builder()
-            .id(id)
-            .inputDomain(User.builder().username(username).password(password).edad(edad).build())
-            .build();
-
-    ResponseEntity<UpdateUserCRUDOkResponseResponseDto> response =
-        (ResponseEntity<UpdateUserCRUDOkResponseResponseDto>)
-            userCRUDController.updateUser(bodyRequestDto);
-    Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
-    User outputDomain = response.getBody().getOutputDomainEntity();
-    Assertions.assertEquals(id, outputDomain.getId());
-    Assertions.assertEquals(username, outputDomain.getUsername());
-    Assertions.assertEquals(password, outputDomain.getPassword());
-    Assertions.assertEquals(edad, outputDomain.getEdad());
-  }
-
-  @Test
   void deleteEntityDeleteUserCrud() {
     Long id = connect.createEmptyEntity();
     DeleteUserCrudCRUDBodyRequestDto bodyRequestDto =
@@ -115,6 +77,44 @@ class UserCrudControllerTest {
         (ResponseEntity<AddUserCrudCRUDOkResponseResponseDto>)
             userCRUDController.addUserCrud(bodyRequestDto);
     Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
+  }
+
+  @Test
+  void updateEntityUpdateUser() {
+    Long id = connect.createEmptyEntity();
+
+    String username = "username";
+    String password = "password";
+    Integer edad = 1;
+    UpdateUserCRUDBodyRequestDto bodyRequestDto =
+        UpdateUserCRUDBodyRequestDto.builder()
+            .id(id)
+            .inputDomain(User.builder().username(username).password(password).edad(edad).build())
+            .build();
+
+    ResponseEntity<UpdateUserCRUDOkResponseResponseDto> response =
+        (ResponseEntity<UpdateUserCRUDOkResponseResponseDto>)
+            userCRUDController.updateUser(bodyRequestDto);
+    Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
+    User outputDomain = response.getBody().getOutputDomainEntity();
+    Assertions.assertEquals(id, outputDomain.getId());
+    Assertions.assertEquals(username, outputDomain.getUsername());
+    Assertions.assertEquals(password, outputDomain.getPassword());
+    Assertions.assertEquals(edad, outputDomain.getEdad());
+  }
+
+  @Test
+  void findEntityGetUser() {
+    Long id = connect.createEmptyEntity();
+
+    GetUserCRUDPathVariableRequestDto pathVariableRequestDto =
+        GetUserCRUDPathVariableRequestDto.builder().id(id).build();
+
+    ResponseEntity<GetUserCRUDOkResponseResponseDto> response =
+        (ResponseEntity<GetUserCRUDOkResponseResponseDto>)
+            userCRUDController.getUser(pathVariableRequestDto);
+    Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
+    Assertions.assertNotNull(response.getBody().getOutputDomainEntity());
   }
 }
 

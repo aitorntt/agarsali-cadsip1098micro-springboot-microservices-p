@@ -7,6 +7,9 @@ import com.dedalow.cad.micro.commons.dto.pojo.TestingObjectsBcGetProductsOutType
 import com.dedalow.cad.micro.commons.dto.pojo.TestingObjectsBcSaveProductInPricesPriceDto;
 import com.dedalow.cad.micro.commons.dto.pojo.TestingObjectsBcSaveProductInProductDto;
 import com.dedalow.cad.micro.commons.dto.response.BackendResponse;
+import com.dedalow.cad.micro.commons.dto.response.GetTypeOkResponseResponseDto;
+import com.dedalow.cad.micro.commons.dto.response.SaveProductCRUDOkResponseResponseDto;
+import com.dedalow.cad.micro.commons.dto.response.ShowProductsOkResponseResponseDto;
 import com.dedalow.cad.micro.commons.dto.response.TestingObjectsBcGetProductsOkResponseResponseDto;
 import com.dedalow.cad.micro.commons.dto.response.TestingObjectsBcSaveProductOkResponseResponseDto;
 import com.dedalow.cad.micro.commons.exception.CadException;
@@ -19,7 +22,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -35,12 +37,23 @@ public class TestingObjectsBcServiceImpl implements TestingObjectsBcService {
       throws CadException {
 
     Product savedProduct = null;
+    BackendResponse<?> _backendResponse = null;
 
     try {
 
-      savedProduct =
+      _backendResponse =
           productCRUDService.executeSaveProduct(
               ObjectMapperUtil.convertValue(product, new TypeReference<Product>() {}));
+
+      if (!_backendResponse.isOk()) {
+        throw new CadException(_backendResponse.getMessage());
+      } else {
+        savedProduct =
+            ObjectMapperUtil.convertValue(
+                    _backendResponse.getBody(),
+                    new TypeReference<SaveProductCRUDOkResponseResponseDto>() {})
+                .getOutputDomainEntity();
+      }
 
     } catch (Exception e) {
     }
@@ -48,8 +61,15 @@ public class TestingObjectsBcServiceImpl implements TestingObjectsBcService {
     do {
       try {
 
-        sqlService.executeSavePrice(
-            prices.get(i).getPrice(), prices.get(i).getCurrency(), savedProduct.getId());
+        _backendResponse =
+            sqlService.executeSavePrice(
+                prices.get(i).getPrice(), prices.get(i).getCurrency(), savedProduct.getId());
+
+        if (!_backendResponse.isOk()) {
+          throw new CadException(_backendResponse.getMessage());
+        } else {
+
+        }
 
       } catch (Exception e) {
       }
@@ -62,7 +82,7 @@ public class TestingObjectsBcServiceImpl implements TestingObjectsBcService {
                 .typeId(savedProduct.getTypeId())
                 .build())
         .isOk(true)
-        .statusCode(HttpStatus.OK.value())
+        .statusCode(200)
         .build();
   }
 
@@ -71,16 +91,37 @@ public class TestingObjectsBcServiceImpl implements TestingObjectsBcService {
 
     GetTypeOutTypeDto type = null;
     List<ShowProductsOutProductsDataDto> products = new ArrayList<>();
+    BackendResponse<?> _backendResponse = null;
 
     try {
 
-      type = sqlService.executeGetType(typeId);
+      _backendResponse = sqlService.executeGetType(typeId);
+
+      if (!_backendResponse.isOk()) {
+        throw new CadException(_backendResponse.getMessage());
+      } else {
+        type =
+            ObjectMapperUtil.convertValue(
+                    _backendResponse.getBody(),
+                    new TypeReference<GetTypeOkResponseResponseDto>() {})
+                .getType();
+      }
 
     } catch (Exception e) {
     }
     try {
 
-      products = sqlService.executeShowProducts(typeId);
+      _backendResponse = sqlService.executeShowProducts(typeId);
+
+      if (!_backendResponse.isOk()) {
+        throw new CadException(_backendResponse.getMessage());
+      } else {
+        products =
+            ObjectMapperUtil.convertValue(
+                    _backendResponse.getBody(),
+                    new TypeReference<ShowProductsOkResponseResponseDto>() {})
+                .getProducts();
+      }
 
     } catch (Exception e) {
     }
@@ -98,7 +139,7 @@ public class TestingObjectsBcServiceImpl implements TestingObjectsBcService {
                                 TestingObjectsBcGetProductsOutProductsServerActionParameterResponseDto>>() {}))
                 .build())
         .isOk(true)
-        .statusCode(HttpStatus.OK.value())
+        .statusCode(200)
         .build();
   }
 }

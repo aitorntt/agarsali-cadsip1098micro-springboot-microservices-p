@@ -1,7 +1,7 @@
 package com.dedalow.cad.micro.controller;
 
 import com.dedalow.cad.micro.commons.dto.request.SaveProductCRUDBodyRequestDto;
-import com.dedalow.cad.micro.commons.dto.response.SaveProductCRUDOkResponseResponseDto;
+import com.dedalow.cad.micro.commons.dto.response.BackendResponse;
 import com.dedalow.cad.micro.commons.exception.CadException;
 import com.dedalow.cad.micro.commons.exception.ExceptionResponse;
 import com.dedalow.cad.micro.commons.model.Product;
@@ -48,12 +48,9 @@ public class ProductCRUDController {
 
       Product inputDomain = bodyRequest.getInputDomain();
 
-      SaveProductCRUDOkResponseResponseDto response =
-          SaveProductCRUDOkResponseResponseDto.builder()
-              .outputDomainEntity(productCRUDService.executeSaveProduct(inputDomain))
-              .build();
+      BackendResponse<?> response = productCRUDService.executeSaveProduct(inputDomain);
 
-      return ResponseEntity.status(HttpStatus.OK).body(response);
+      return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
     } catch (Exception e) {
 
       ExceptionResponse exceptionResponse = configService.selectedException(e, "CRUD");

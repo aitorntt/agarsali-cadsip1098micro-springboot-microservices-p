@@ -19,7 +19,7 @@ import org.json.JSONObject;
 
 public class AuthenticationManager {
 
-  private static String jwtSecret = "5xZ8dDnFAMyvV4k4iu9U";
+  private static String jwtSecret = "I74pesHmqrcAOeuP21JD";
 
   private static int jwtExpirationInMs = 604800000;
 

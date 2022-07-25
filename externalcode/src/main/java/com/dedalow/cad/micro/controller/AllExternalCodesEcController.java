@@ -20,19 +20,7 @@ import com.dedalow.cad.micro.commons.dto.request.AllExternalCodesEcSumatorioBody
 import com.dedalow.cad.micro.commons.dto.request.AllExternalCodesEcTestExternalCodeBodyRequestDto;
 import com.dedalow.cad.micro.commons.dto.request.AllExternalCodesEcValidateTypesBodyRequestDto;
 import com.dedalow.cad.micro.commons.dto.request.AllExternalCodesEcValoracionMediaBodyRequestDto;
-import com.dedalow.cad.micro.commons.dto.response.AllExternalCodesEcAddGenerosOkResponseResponseDto;
-import com.dedalow.cad.micro.commons.dto.response.AllExternalCodesEcCastDecimalOkResponseResponseDto;
-import com.dedalow.cad.micro.commons.dto.response.AllExternalCodesEcCastIntegerOkResponseResponseDto;
-import com.dedalow.cad.micro.commons.dto.response.AllExternalCodesEcCastLongOkResponseResponseDto;
-import com.dedalow.cad.micro.commons.dto.response.AllExternalCodesEcCastStringOkResponseResponseDto;
-import com.dedalow.cad.micro.commons.dto.response.AllExternalCodesEcChangeValueOkResponseResponseDto;
-import com.dedalow.cad.micro.commons.dto.response.AllExternalCodesEcGetIntegerValueOkResponseResponseDto;
-import com.dedalow.cad.micro.commons.dto.response.AllExternalCodesEcJoinPeliculasOkResponseResponseDto;
-import com.dedalow.cad.micro.commons.dto.response.AllExternalCodesEcListaPeliculasOkResponseResponseDto;
-import com.dedalow.cad.micro.commons.dto.response.AllExternalCodesEcSumaValoracionOkResponseResponseDto;
-import com.dedalow.cad.micro.commons.dto.response.AllExternalCodesEcSumatorioOkResponseResponseDto;
-import com.dedalow.cad.micro.commons.dto.response.AllExternalCodesEcTestExternalCodeOkResponseResponseDto;
-import com.dedalow.cad.micro.commons.dto.response.AllExternalCodesEcValoracionMediaOkResponseResponseDto;
+import com.dedalow.cad.micro.commons.dto.response.BackendResponse;
 import com.dedalow.cad.micro.commons.exception.CadException;
 import com.dedalow.cad.micro.commons.exception.ExceptionResponse;
 import com.dedalow.cad.micro.commons.services.ConfigService;
@@ -91,14 +79,10 @@ public class AllExternalCodesEcController {
       List<AllExternalCodesEcAddGenerosInGenerosDataDto> generos = bodyRequest.getGeneros();
       String genero = bodyRequest.getGenero();
 
-      AllExternalCodesEcAddGenerosOkResponseResponseDto response =
-          AllExternalCodesEcAddGenerosOkResponseResponseDto.builder()
-              .generos(
-                  allexternalcodesEcService.executeAddGeneros(
-                      peliculas, valoracionMedia, generos, genero))
-              .build();
+      BackendResponse<?> response =
+          allexternalcodesEcService.executeAddGeneros(peliculas, valoracionMedia, generos, genero);
 
-      return ResponseEntity.status(HttpStatus.OK).body(response);
+      return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
     } catch (Exception e) {
 
       ExceptionResponse exceptionResponse = configService.selectedException(e, "EC");
@@ -132,12 +116,9 @@ public class AllExternalCodesEcController {
       }
       BigDecimal inputValue = bodyRequest.getInputValue();
 
-      AllExternalCodesEcCastDecimalOkResponseResponseDto response =
-          AllExternalCodesEcCastDecimalOkResponseResponseDto.builder()
-              .outputValue(allexternalcodesEcService.executeCastDecimal(inputValue))
-              .build();
+      BackendResponse<?> response = allexternalcodesEcService.executeCastDecimal(inputValue);
 
-      return ResponseEntity.status(HttpStatus.OK).body(response);
+      return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
     } catch (Exception e) {
 
       ExceptionResponse exceptionResponse = configService.selectedException(e, "EC");
@@ -159,12 +140,9 @@ public class AllExternalCodesEcController {
 
     try {
 
-      AllExternalCodesEcGetIntegerValueOkResponseResponseDto response =
-          AllExternalCodesEcGetIntegerValueOkResponseResponseDto.builder()
-              .outputValue(allexternalcodesEcService.executeGetIntegerValue())
-              .build();
+      BackendResponse<?> response = allexternalcodesEcService.executeGetIntegerValue();
 
-      return ResponseEntity.status(HttpStatus.OK).body(response);
+      return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
     } catch (Exception e) {
 
       ExceptionResponse exceptionResponse = configService.selectedException(e, "EC");
@@ -198,12 +176,9 @@ public class AllExternalCodesEcController {
       }
       String username = bodyRequest.getUsername();
 
-      AllExternalCodesEcTestExternalCodeOkResponseResponseDto response =
-          AllExternalCodesEcTestExternalCodeOkResponseResponseDto.builder()
-              .username(allexternalcodesEcService.executeTestExternalCode(username))
-              .build();
+      BackendResponse<?> response = allexternalcodesEcService.executeTestExternalCode(username);
 
-      return ResponseEntity.status(HttpStatus.OK).body(response);
+      return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
     } catch (Exception e) {
 
       ExceptionResponse exceptionResponse = configService.selectedException(e, "EC");
@@ -241,12 +216,9 @@ public class AllExternalCodesEcController {
       Integer sumatorio = bodyRequest.getSumatorio();
       Integer iterate = bodyRequest.getIterate();
 
-      AllExternalCodesEcSumatorioOkResponseResponseDto response =
-          AllExternalCodesEcSumatorioOkResponseResponseDto.builder()
-              .sumatorio(allexternalcodesEcService.executeSumatorio(sumatorio, iterate))
-              .build();
+      BackendResponse<?> response = allexternalcodesEcService.executeSumatorio(sumatorio, iterate);
 
-      return ResponseEntity.status(HttpStatus.OK).body(response);
+      return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
     } catch (Exception e) {
 
       ExceptionResponse exceptionResponse = configService.selectedException(e, "EC");
@@ -346,12 +318,9 @@ public class AllExternalCodesEcController {
 
     try {
 
-      AllExternalCodesEcChangeValueOkResponseResponseDto response =
-          AllExternalCodesEcChangeValueOkResponseResponseDto.builder()
-              .value(allexternalcodesEcService.executeChangeValue())
-              .build();
+      BackendResponse<?> response = allexternalcodesEcService.executeChangeValue();
 
-      return ResponseEntity.status(HttpStatus.OK).body(response);
+      return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
     } catch (Exception e) {
 
       ExceptionResponse exceptionResponse = configService.selectedException(e, "EC");
@@ -421,12 +390,9 @@ public class AllExternalCodesEcController {
       }
       Integer inputValue = bodyRequest.getInputValue();
 
-      AllExternalCodesEcCastIntegerOkResponseResponseDto response =
-          AllExternalCodesEcCastIntegerOkResponseResponseDto.builder()
-              .outputValue(allexternalcodesEcService.executeCastInteger(inputValue))
-              .build();
+      BackendResponse<?> response = allexternalcodesEcService.executeCastInteger(inputValue);
 
-      return ResponseEntity.status(HttpStatus.OK).body(response);
+      return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
     } catch (Exception e) {
 
       ExceptionResponse exceptionResponse = configService.selectedException(e, "EC");
@@ -538,12 +504,10 @@ public class AllExternalCodesEcController {
       List<AllExternalCodesEcJoinPeliculasInPeliculasAllDataDto> peliculasAll =
           bodyRequest.getPeliculasAll();
 
-      AllExternalCodesEcJoinPeliculasOkResponseResponseDto response =
-          AllExternalCodesEcJoinPeliculasOkResponseResponseDto.builder()
-              .peliculas(allexternalcodesEcService.executeJoinPeliculas(peliculas, peliculasAll))
-              .build();
+      BackendResponse<?> response =
+          allexternalcodesEcService.executeJoinPeliculas(peliculas, peliculasAll);
 
-      return ResponseEntity.status(HttpStatus.OK).body(response);
+      return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
     } catch (Exception e) {
 
       ExceptionResponse exceptionResponse = configService.selectedException(e, "EC");
@@ -577,12 +541,9 @@ public class AllExternalCodesEcController {
       }
       Long inputValue = bodyRequest.getInputValue();
 
-      AllExternalCodesEcCastLongOkResponseResponseDto response =
-          AllExternalCodesEcCastLongOkResponseResponseDto.builder()
-              .outputValue(allexternalcodesEcService.executeCastLong(inputValue))
-              .build();
+      BackendResponse<?> response = allexternalcodesEcService.executeCastLong(inputValue);
 
-      return ResponseEntity.status(HttpStatus.OK).body(response);
+      return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
     } catch (Exception e) {
 
       ExceptionResponse exceptionResponse = configService.selectedException(e, "EC");
@@ -604,12 +565,9 @@ public class AllExternalCodesEcController {
 
     try {
 
-      AllExternalCodesEcListaPeliculasOkResponseResponseDto response =
-          AllExternalCodesEcListaPeliculasOkResponseResponseDto.builder()
-              .peliculaslist(allexternalcodesEcService.executeListaPeliculas())
-              .build();
+      BackendResponse<?> response = allexternalcodesEcService.executeListaPeliculas();
 
-      return ResponseEntity.status(HttpStatus.OK).body(response);
+      return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
     } catch (Exception e) {
 
       ExceptionResponse exceptionResponse = configService.selectedException(e, "EC");
@@ -647,13 +605,10 @@ public class AllExternalCodesEcController {
       Integer valoracion = bodyRequest.getValoracion();
       Integer valoracionElementos = bodyRequest.getValoracionElementos();
 
-      AllExternalCodesEcSumaValoracionOkResponseResponseDto response =
-          AllExternalCodesEcSumaValoracionOkResponseResponseDto.builder()
-              .valoracion(
-                  allexternalcodesEcService.executeSumaValoracion(valoracion, valoracionElementos))
-              .build();
+      BackendResponse<?> response =
+          allexternalcodesEcService.executeSumaValoracion(valoracion, valoracionElementos);
 
-      return ResponseEntity.status(HttpStatus.OK).body(response);
+      return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
     } catch (Exception e) {
 
       ExceptionResponse exceptionResponse = configService.selectedException(e, "EC");
@@ -687,12 +642,9 @@ public class AllExternalCodesEcController {
       }
       String inputValue = bodyRequest.getInputValue();
 
-      AllExternalCodesEcCastStringOkResponseResponseDto response =
-          AllExternalCodesEcCastStringOkResponseResponseDto.builder()
-              .outputValue(allexternalcodesEcService.executeCastString(inputValue))
-              .build();
+      BackendResponse<?> response = allexternalcodesEcService.executeCastString(inputValue);
 
-      return ResponseEntity.status(HttpStatus.OK).body(response);
+      return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
     } catch (Exception e) {
 
       ExceptionResponse exceptionResponse = configService.selectedException(e, "EC");
@@ -730,13 +682,10 @@ public class AllExternalCodesEcController {
       Integer valoracion = bodyRequest.getValoracion();
       List<String> elementos = bodyRequest.getElementos();
 
-      AllExternalCodesEcValoracionMediaOkResponseResponseDto response =
-          AllExternalCodesEcValoracionMediaOkResponseResponseDto.builder()
-              .valoracionMedia(
-                  allexternalcodesEcService.executeValoracionMedia(valoracion, elementos))
-              .build();
+      BackendResponse<?> response =
+          allexternalcodesEcService.executeValoracionMedia(valoracion, elementos);
 
-      return ResponseEntity.status(HttpStatus.OK).body(response);
+      return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
     } catch (Exception e) {
 
       ExceptionResponse exceptionResponse = configService.selectedException(e, "EC");

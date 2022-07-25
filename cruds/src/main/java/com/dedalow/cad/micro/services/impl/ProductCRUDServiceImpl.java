@@ -1,7 +1,10 @@
 package com.dedalow.cad.micro.services.impl;
 
 
+import com.dedalow.cad.micro.commons.dto.response.BackendResponse;
+import com.dedalow.cad.micro.commons.dto.response.SaveProductCRUDOkResponseResponseDto;
 import com.dedalow.cad.micro.commons.model.Product;
+import com.dedalow.cad.micro.commons.services.EncodeService;
 import com.dedalow.cad.micro.domain.util.ProductEntityConverter;
 import com.dedalow.cad.micro.repository.internal.ProductCRUDRepository;
 import com.dedalow.cad.micro.services.ProductCRUDService;
@@ -19,13 +22,23 @@ public class ProductCRUDServiceImpl implements ProductCRUDService {
 
   @Autowired private ProductCRUDRepository productCRUDRepository;
 
+  @Autowired EncodeService encodeService;
+
   @Override
   @Transactional("internalTransactionManager")
-  public Product executeSaveProduct(Product inputDomain) {
+  public BackendResponse<?> executeSaveProduct(Product inputDomain) {
     com.dedalow.cad.micro.domain.internal.Product inputDomainEntity =
         ProductEntityConverter.convertToEntityWithRelations(inputDomain);
     inputDomainEntity = productCRUDRepository.save(inputDomainEntity);
-    return ProductEntityConverter.convertToModelWithRelations(inputDomainEntity);
+    return BackendResponse.builder()
+        .body(
+            SaveProductCRUDOkResponseResponseDto.builder()
+                .outputDomainEntity(
+                    ProductEntityConverter.convertToModelWithRelations(inputDomainEntity))
+                .build())
+        .isOk(true)
+        .statusCode(200)
+        .build();
   }
 
   @Override

@@ -20,6 +20,28 @@ import com.dedalow.cad.micro.commons.dto.pojo.GetUsuariosOutUsuariosDataDto;
 import com.dedalow.cad.micro.commons.dto.pojo.GetUsuariosTransOutOutputSQLResultDataDto;
 import com.dedalow.cad.micro.commons.dto.pojo.ShowProductsOutProductsDataDto;
 import com.dedalow.cad.micro.commons.dto.pojo.ValidateObjectsInUserDto;
+import com.dedalow.cad.micro.commons.dto.response.BackendResponse;
+import com.dedalow.cad.micro.commons.dto.response.EmptyResponse;
+import com.dedalow.cad.micro.commons.dto.response.ForceFailOkResponseResponseDto;
+import com.dedalow.cad.micro.commons.dto.response.GetGenerosOkResponseResponseDto;
+import com.dedalow.cad.micro.commons.dto.response.GetIdByUsernameOkResponseResponseDto;
+import com.dedalow.cad.micro.commons.dto.response.GetListUsuariosOkResponseResponseDto;
+import com.dedalow.cad.micro.commons.dto.response.GetPeliculasAllOkResponseResponseDto;
+import com.dedalow.cad.micro.commons.dto.response.GetPeliculasMayor18OkResponseResponseDto;
+import com.dedalow.cad.micro.commons.dto.response.GetPeliculasMenor5Hasta18OkResponseResponseDto;
+import com.dedalow.cad.micro.commons.dto.response.GetPeliculasMenor5OkResponseResponseDto;
+import com.dedalow.cad.micro.commons.dto.response.GetSeriesMayor18OkResponseResponseDto;
+import com.dedalow.cad.micro.commons.dto.response.GetSeriesMenor5Hasta18OkResponseResponseDto;
+import com.dedalow.cad.micro.commons.dto.response.GetSeriesMenor5OkResponseResponseDto;
+import com.dedalow.cad.micro.commons.dto.response.GetTitulosOkResponseResponseDto;
+import com.dedalow.cad.micro.commons.dto.response.GetTypeOkResponseResponseDto;
+import com.dedalow.cad.micro.commons.dto.response.GetTypesOkResponseResponseDto;
+import com.dedalow.cad.micro.commons.dto.response.GetUserByUsernameOkResponseResponseDto;
+import com.dedalow.cad.micro.commons.dto.response.GetUsuarioOkResponseResponseDto;
+import com.dedalow.cad.micro.commons.dto.response.GetUsuarioTransOkResponseResponseDto;
+import com.dedalow.cad.micro.commons.dto.response.GetUsuariosOkResponseResponseDto;
+import com.dedalow.cad.micro.commons.dto.response.GetUsuariosTransOkResponseResponseDto;
+import com.dedalow.cad.micro.commons.dto.response.ShowProductsOkResponseResponseDto;
 import com.dedalow.cad.micro.commons.services.EncodeService;
 import com.dedalow.cad.micro.repository.internal.AddTituloRepository;
 import com.dedalow.cad.micro.repository.internal.AddTypeRepository;
@@ -148,31 +170,43 @@ public class SqlServiceImpl implements SqlService {
   @Autowired EncodeService encodeService;
 
   @Override
-  public void executeDeleteUsuarioTest() {
+  public BackendResponse<?> executeDeleteUsuarioTest() {
     deleteUsuarioTestRepository.executeQuery();
+    return BackendResponse.builder().body(new EmptyResponse()).isOk(true).statusCode(200).build();
   }
 
   @Override
-  public List<GetPeliculasMenor5Hasta18OutOutputSQLResultDataDto> executeGetPeliculasMenor5Hasta18(
-      Long generoId) {
+  public BackendResponse<?> executeGetPeliculasMenor5Hasta18(Long generoId) {
     List<GetPeliculasMenor5Hasta18OutOutputSQLResultDataDto> result =
         (getPeliculasMenor5Hasta18Repository.executeQuery(generoId));
-    return result;
+    return BackendResponse.builder()
+        .body(
+            GetPeliculasMenor5Hasta18OkResponseResponseDto.builder()
+                .outputSQLResult(result)
+                .build())
+        .isOk(true)
+        .statusCode(200)
+        .build();
   }
 
   @Override
-  public List<ForceFailOutOutputSQLResultDataDto> executeForceFail(String username) {
+  public BackendResponse<?> executeForceFail(String username) {
     List<ForceFailOutOutputSQLResultDataDto> result = (forceFailRepository.executeQuery(username));
-    return result;
+    return BackendResponse.builder()
+        .body(ForceFailOkResponseResponseDto.builder().outputSQLResult(result).build())
+        .isOk(true)
+        .statusCode(200)
+        .build();
   }
 
   @Override
-  public void executeValidateList(Integer price) {
+  public BackendResponse<?> executeValidateList(Integer price) {
     validateListRepository.executeQuery(price);
+    return BackendResponse.builder().body(new EmptyResponse()).isOk(true).statusCode(200).build();
   }
 
   @Override
-  public void executeValidateTypes(
+  public BackendResponse<?> executeValidateTypes(
       Boolean typeBoolean,
       BigDecimal typeDecimal,
       Integer typeInteger,
@@ -185,106 +219,151 @@ public class SqlServiceImpl implements SqlService {
     }
     validateTypesRepository.executeQuery(
         typeBoolean, typeDecimal, typeInteger, typeLong, typeLongText, typePassword, typeString);
+    return BackendResponse.builder().body(new EmptyResponse()).isOk(true).statusCode(200).build();
   }
 
   @Override
-  public List<GetUsuariosTransOutOutputSQLResultDataDto> executeGetUsuariosTrans() {
+  public BackendResponse<?> executeGetUsuariosTrans() {
     List<GetUsuariosTransOutOutputSQLResultDataDto> result =
         (getUsuariosTransRepository.executeQuery());
-    return result;
+    return BackendResponse.builder()
+        .body(GetUsuariosTransOkResponseResponseDto.builder().outputSQLResult(result).build())
+        .isOk(true)
+        .statusCode(200)
+        .build();
   }
 
   @Override
-  public void executeInsertProductTest() {
+  public BackendResponse<?> executeInsertProductTest() {
     insertProductTestRepository.executeQuery();
+    return BackendResponse.builder().body(new EmptyResponse()).isOk(true).statusCode(200).build();
   }
 
   @Override
-  public GetUserByUsernameOutOutputSQLResultDto executeGetUserByUsername(String username) {
+  public BackendResponse<?> executeGetUserByUsername(String username) {
     GetUserByUsernameOutOutputSQLResultDto result =
         (getUserByUsernameRepository.executeQuery(username));
-    return result;
+    return BackendResponse.builder()
+        .body(GetUserByUsernameOkResponseResponseDto.builder().outputSQLResult(result).build())
+        .isOk(true)
+        .statusCode(200)
+        .build();
   }
 
   @Override
-  public void executeInsertGeneroTest() {
+  public BackendResponse<?> executeInsertGeneroTest() {
     insertGeneroTestRepository.executeQuery();
+    return BackendResponse.builder().body(new EmptyResponse()).isOk(true).statusCode(200).build();
   }
 
   @Override
-  public void executeInsertUser(String username) {
+  public BackendResponse<?> executeInsertUser(String username) {
     insertUserRepository.executeQuery(username);
+    return BackendResponse.builder().body(new EmptyResponse()).isOk(true).statusCode(200).build();
   }
 
   @Override
-  public void executeDeleteUser(String username) {
+  public BackendResponse<?> executeDeleteUser(String username) {
     deleteUserRepository.executeQuery(username);
+    return BackendResponse.builder().body(new EmptyResponse()).isOk(true).statusCode(200).build();
   }
 
   @Override
-  public GetIdByUsernameOutOutputSQLResultDto executeGetIdByUsername(String username) {
+  public BackendResponse<?> executeGetIdByUsername(String username) {
     GetIdByUsernameOutOutputSQLResultDto result =
         (getIdByUsernameRepository.executeQuery(username));
-    return result;
+    return BackendResponse.builder()
+        .body(GetIdByUsernameOkResponseResponseDto.builder().outputSQLResult(result).build())
+        .isOk(true)
+        .statusCode(200)
+        .build();
   }
 
   @Override
-  public GetUsuarioOutOutputSQLResultDto executeGetUsuario(String username) {
+  public BackendResponse<?> executeGetUsuario(String username) {
     GetUsuarioOutOutputSQLResultDto result = (getUsuarioRepository.executeQuery(username));
-    return result;
+    return BackendResponse.builder()
+        .body(GetUsuarioOkResponseResponseDto.builder().outputSQLResult(result).build())
+        .isOk(true)
+        .statusCode(200)
+        .build();
   }
 
   @Override
-  public List<GetPeliculasAllOutPeliculasAllDataDto> executeGetPeliculasAll(Long generoId) {
+  public BackendResponse<?> executeGetPeliculasAll(Long generoId) {
     List<GetPeliculasAllOutPeliculasAllDataDto> result =
         (getPeliculasAllRepository.executeQuery(generoId));
-    return result;
+    return BackendResponse.builder()
+        .body(GetPeliculasAllOkResponseResponseDto.builder().peliculasAll(result).build())
+        .isOk(true)
+        .statusCode(200)
+        .build();
   }
 
   @Override
-  public List<GetPeliculasMenor5OutOutputSQLResultDataDto> executeGetPeliculasMenor5(
-      Long generoId) {
+  public BackendResponse<?> executeGetPeliculasMenor5(Long generoId) {
     List<GetPeliculasMenor5OutOutputSQLResultDataDto> result =
         (getPeliculasMenor5Repository.executeQuery(generoId));
-    return result;
+    return BackendResponse.builder()
+        .body(GetPeliculasMenor5OkResponseResponseDto.builder().outputSQLResult(result).build())
+        .isOk(true)
+        .statusCode(200)
+        .build();
   }
 
   @Override
-  public List<GetPeliculasMayor18OutOutputSQLResultDataDto> executeGetPeliculasMayor18(
-      Long generoId) {
+  public BackendResponse<?> executeGetPeliculasMayor18(Long generoId) {
     List<GetPeliculasMayor18OutOutputSQLResultDataDto> result =
         (getPeliculasMayor18Repository.executeQuery(generoId));
-    return result;
+    return BackendResponse.builder()
+        .body(GetPeliculasMayor18OkResponseResponseDto.builder().outputSQLResult(result).build())
+        .isOk(true)
+        .statusCode(200)
+        .build();
   }
 
   @Override
-  public List<GetSeriesMenor5OutOutputSQLResultDataDto> executeGetSeriesMenor5() {
+  public BackendResponse<?> executeGetSeriesMenor5() {
     List<GetSeriesMenor5OutOutputSQLResultDataDto> result =
         (getSeriesMenor5Repository.executeQuery());
-    return result;
+    return BackendResponse.builder()
+        .body(GetSeriesMenor5OkResponseResponseDto.builder().outputSQLResult(result).build())
+        .isOk(true)
+        .statusCode(200)
+        .build();
   }
 
   @Override
-  public List<GetSeriesMenor5Hasta18OutOutputSQLResultDataDto> executeGetSeriesMenor5Hasta18() {
+  public BackendResponse<?> executeGetSeriesMenor5Hasta18() {
     List<GetSeriesMenor5Hasta18OutOutputSQLResultDataDto> result =
         (getSeriesMenor5Hasta18Repository.executeQuery());
-    return result;
+    return BackendResponse.builder()
+        .body(GetSeriesMenor5Hasta18OkResponseResponseDto.builder().outputSQLResult(result).build())
+        .isOk(true)
+        .statusCode(200)
+        .build();
   }
 
   @Override
-  public List<GetSeriesMayor18OutOutputSQLResultDataDto> executeGetSeriesMayor18() {
+  public BackendResponse<?> executeGetSeriesMayor18() {
     List<GetSeriesMayor18OutOutputSQLResultDataDto> result =
         (getSeriesMayor18Repository.executeQuery());
-    return result;
+    return BackendResponse.builder()
+        .body(GetSeriesMayor18OkResponseResponseDto.builder().outputSQLResult(result).build())
+        .isOk(true)
+        .statusCode(200)
+        .build();
   }
 
   @Override
-  public void executeAddUsuario(String nombre, String apellidos, Integer edad, String username) {
+  public BackendResponse<?> executeAddUsuario(
+      String nombre, String apellidos, Integer edad, String username) {
     addUsuarioRepository.executeQuery(nombre, apellidos, edad, username);
+    return BackendResponse.builder().body(new EmptyResponse()).isOk(true).statusCode(200).build();
   }
 
   @Override
-  public void executeAddTitulo(
+  public BackendResponse<?> executeAddTitulo(
       Integer adult,
       Integer valoracion,
       Integer baby,
@@ -293,184 +372,243 @@ public class SqlServiceImpl implements SqlService {
       String titulo,
       Long generoId) {
     addTituloRepository.executeQuery(adult, valoracion, baby, pelicula, medium, titulo, generoId);
+    return BackendResponse.builder().body(new EmptyResponse()).isOk(true).statusCode(200).build();
   }
 
   @Override
-  public List<GetTitulosOutOutputSQLResultDataDto> executeGetTitulos() {
+  public BackendResponse<?> executeGetTitulos() {
     List<GetTitulosOutOutputSQLResultDataDto> result = (getTitulosRepository.executeQuery());
-    return result;
+    return BackendResponse.builder()
+        .body(GetTitulosOkResponseResponseDto.builder().outputSQLResult(result).build())
+        .isOk(true)
+        .statusCode(200)
+        .build();
   }
 
   @Override
-  public List<GetUsuariosOutUsuariosDataDto> executeGetUsuarios() {
+  public BackendResponse<?> executeGetUsuarios() {
     List<GetUsuariosOutUsuariosDataDto> result = (getUsuariosRepository.executeQuery());
-    return result;
+    return BackendResponse.builder()
+        .body(GetUsuariosOkResponseResponseDto.builder().usuarios(result).build())
+        .isOk(true)
+        .statusCode(200)
+        .build();
   }
 
   @Override
-  public void executeDeleteUsuarioTrans(Long id) {
+  public BackendResponse<?> executeDeleteUsuarioTrans(Long id) {
     deleteUsuarioTransRepository.executeQuery(id);
+    return BackendResponse.builder().body(new EmptyResponse()).isOk(true).statusCode(200).build();
   }
 
   @Override
-  public void executeAddUsuarioTrans(String username) {
+  public BackendResponse<?> executeAddUsuarioTrans(String username) {
     addUsuarioTransRepository.executeQuery(username);
+    return BackendResponse.builder().body(new EmptyResponse()).isOk(true).statusCode(200).build();
   }
 
   @Override
-  public GetUsuarioTransOutOutputSQLResultDto executeGetUsuarioTrans(String username) {
+  public BackendResponse<?> executeGetUsuarioTrans(String username) {
     GetUsuarioTransOutOutputSQLResultDto result =
         (getUsuarioTransRepository.executeQuery(username));
-    return result;
+    return BackendResponse.builder()
+        .body(GetUsuarioTransOkResponseResponseDto.builder().outputSQLResult(result).build())
+        .isOk(true)
+        .statusCode(200)
+        .build();
   }
 
   @Override
-  public void executeSavePrice(BigDecimal price, String currency, Long productId) {
+  public BackendResponse<?> executeSavePrice(BigDecimal price, String currency, Long productId) {
     savePriceRepository.executeQuery(price, currency, productId);
+    return BackendResponse.builder().body(new EmptyResponse()).isOk(true).statusCode(200).build();
   }
 
   @Override
-  public List<ShowProductsOutProductsDataDto> executeShowProducts(Long typeId) {
+  public BackendResponse<?> executeShowProducts(Long typeId) {
     List<ShowProductsOutProductsDataDto> result = (showProductsRepository.executeQuery(typeId));
-    return result;
+    return BackendResponse.builder()
+        .body(ShowProductsOkResponseResponseDto.builder().products(result).build())
+        .isOk(true)
+        .statusCode(200)
+        .build();
   }
 
   @Override
-  public List<GetGenerosOutOutputSQLResultDataDto> executeGetGeneros() {
+  public BackendResponse<?> executeGetGeneros() {
     List<GetGenerosOutOutputSQLResultDataDto> result = (getGenerosRepository.executeQuery());
-    return result;
+    return BackendResponse.builder()
+        .body(GetGenerosOkResponseResponseDto.builder().outputSQLResult(result).build())
+        .isOk(true)
+        .statusCode(200)
+        .build();
   }
 
   @Override
-  public void executeDeleteUsuario(Long id) {
+  public BackendResponse<?> executeDeleteUsuario(Long id) {
     deleteUsuarioRepository.executeQuery(id);
+    return BackendResponse.builder().body(new EmptyResponse()).isOk(true).statusCode(200).build();
   }
 
   @Override
-  public void executeDeleteTitulo(Long id) {
+  public BackendResponse<?> executeDeleteTitulo(Long id) {
     deleteTituloRepository.executeQuery(id);
+    return BackendResponse.builder().body(new EmptyResponse()).isOk(true).statusCode(200).build();
   }
 
   @Override
-  public void executeDeleteProduct(Long id) {
+  public BackendResponse<?> executeDeleteProduct(Long id) {
     deleteProductRepository.executeQuery(id);
+    return BackendResponse.builder().body(new EmptyResponse()).isOk(true).statusCode(200).build();
   }
 
   @Override
-  public List<GetTypesOutTypesDataDto> executeGetTypes() {
+  public BackendResponse<?> executeGetTypes() {
     List<GetTypesOutTypesDataDto> result = (getTypesRepository.executeQuery());
-    return result;
+    return BackendResponse.builder()
+        .body(GetTypesOkResponseResponseDto.builder().types(result).build())
+        .isOk(true)
+        .statusCode(200)
+        .build();
   }
 
   @Override
-  public void executeAddType(String name) {
+  public BackendResponse<?> executeAddType(String name) {
     addTypeRepository.executeQuery(name);
+    return BackendResponse.builder().body(new EmptyResponse()).isOk(true).statusCode(200).build();
   }
 
   @Override
-  public GetTypeOutTypeDto executeGetType(Long typeId) {
+  public BackendResponse<?> executeGetType(Long typeId) {
     GetTypeOutTypeDto result = (getTypeRepository.executeQuery(typeId));
-    return result;
+    return BackendResponse.builder()
+        .body(GetTypeOkResponseResponseDto.builder().type(result).build())
+        .isOk(true)
+        .statusCode(200)
+        .build();
   }
 
   @Override
-  public void executeValidateObjects(ValidateObjectsInUserDto user) {
+  public BackendResponse<?> executeValidateObjects(ValidateObjectsInUserDto user) {
     validateObjectsRepository.executeQuery(user);
+    return BackendResponse.builder().body(new EmptyResponse()).isOk(true).statusCode(200).build();
   }
 
   @Override
-  public void executeDeleteValidateTypes() {
+  public BackendResponse<?> executeDeleteValidateTypes() {
     deleteValidateTypesRepository.executeQuery();
+    return BackendResponse.builder().body(new EmptyResponse()).isOk(true).statusCode(200).build();
   }
 
   @Override
-  public void executeDeleteValidateObjects() {
+  public BackendResponse<?> executeDeleteValidateObjects() {
     deleteValidateObjectsRepository.executeQuery();
+    return BackendResponse.builder().body(new EmptyResponse()).isOk(true).statusCode(200).build();
   }
 
   @Override
-  public void executeDeleteValidateList() {
+  public BackendResponse<?> executeDeleteValidateList() {
     deleteValidateListRepository.executeQuery();
+    return BackendResponse.builder().body(new EmptyResponse()).isOk(true).statusCode(200).build();
   }
 
   @Override
-  public void executeDeleteType(Long id) {
+  public BackendResponse<?> executeDeleteType(Long id) {
     deleteTypeRepository.executeQuery(id);
+    return BackendResponse.builder().body(new EmptyResponse()).isOk(true).statusCode(200).build();
   }
 
   @Override
-  public void executeDeleteUsuarioTransByName(String username) {
+  public BackendResponse<?> executeDeleteUsuarioTransByName(String username) {
     deleteUsuarioTransByNameRepository.executeQuery(username);
+    return BackendResponse.builder().body(new EmptyResponse()).isOk(true).statusCode(200).build();
   }
 
   @Override
-  public void executeAddValidName(String name) {
+  public BackendResponse<?> executeAddValidName(String name) {
     addValidNameRepository.executeQuery(name);
+    return BackendResponse.builder().body(new EmptyResponse()).isOk(true).statusCode(200).build();
   }
 
   @Override
-  public void executeDeleteNames() {
+  public BackendResponse<?> executeDeleteNames() {
     deleteNamesRepository.executeQuery();
+    return BackendResponse.builder().body(new EmptyResponse()).isOk(true).statusCode(200).build();
   }
 
   @Override
-  public List<String> executeGetListUsuarios() {
+  public BackendResponse<?> executeGetListUsuarios() {
     List<String> result = (getListUsuariosRepository.executeQuery());
-    return result;
+    return BackendResponse.builder()
+        .body(GetListUsuariosOkResponseResponseDto.builder().usuarios(result).build())
+        .isOk(true)
+        .statusCode(200)
+        .build();
   }
 
   @Override
-  public void executeInsertTypeProductTest() {
+  public BackendResponse<?> executeInsertTypeProductTest() {
     insertTypeProductTestRepository.executeQuery();
+    return BackendResponse.builder().body(new EmptyResponse()).isOk(true).statusCode(200).build();
   }
 
   @Override
-  public void executeDeleteGeneroTest() {
+  public BackendResponse<?> executeDeleteGeneroTest() {
     deleteGeneroTestRepository.executeQuery();
+    return BackendResponse.builder().body(new EmptyResponse()).isOk(true).statusCode(200).build();
   }
 
   @Override
-  public void executeDeleteTypeProductTest() {
+  public BackendResponse<?> executeDeleteTypeProductTest() {
     deleteTypeProductTestRepository.executeQuery();
+    return BackendResponse.builder().body(new EmptyResponse()).isOk(true).statusCode(200).build();
   }
 
   @Override
-  public void executeDeleteTitulosTest() {
+  public BackendResponse<?> executeDeleteTitulosTest() {
     deleteTitulosTestRepository.executeQuery();
+    return BackendResponse.builder().body(new EmptyResponse()).isOk(true).statusCode(200).build();
   }
 
   @Override
-  public void executeDeleteProductTest() {
+  public BackendResponse<?> executeDeleteProductTest() {
     deleteProductTestRepository.executeQuery();
+    return BackendResponse.builder().body(new EmptyResponse()).isOk(true).statusCode(200).build();
   }
 
   @Override
-  public void executeDeleteUserTest() {
+  public BackendResponse<?> executeDeleteUserTest() {
     deleteUserTestRepository.executeQuery();
+    return BackendResponse.builder().body(new EmptyResponse()).isOk(true).statusCode(200).build();
   }
 
   @Override
-  public void executeDeleteUsuarioTransTest() {
+  public BackendResponse<?> executeDeleteUsuarioTransTest() {
     deleteUsuarioTransTestRepository.executeQuery();
+    return BackendResponse.builder().body(new EmptyResponse()).isOk(true).statusCode(200).build();
   }
 
   @Override
-  public void executeInsertUsuarioTest() {
+  public BackendResponse<?> executeInsertUsuarioTest() {
     insertUsuarioTestRepository.executeQuery();
+    return BackendResponse.builder().body(new EmptyResponse()).isOk(true).statusCode(200).build();
   }
 
   @Override
-  public void executeInsertUsertTest() {
+  public BackendResponse<?> executeInsertUsertTest() {
     insertUsertTestRepository.executeQuery();
+    return BackendResponse.builder().body(new EmptyResponse()).isOk(true).statusCode(200).build();
   }
 
   @Override
-  public void executeInsertUsuarioTransTest() {
+  public BackendResponse<?> executeInsertUsuarioTransTest() {
     insertUsuarioTransTestRepository.executeQuery();
+    return BackendResponse.builder().body(new EmptyResponse()).isOk(true).statusCode(200).build();
   }
 
   @Override
-  public void executeInsertTitulosTest() {
+  public BackendResponse<?> executeInsertTitulosTest() {
     insertTitulosTestRepository.executeQuery();
+    return BackendResponse.builder().body(new EmptyResponse()).isOk(true).statusCode(200).build();
   }
 }

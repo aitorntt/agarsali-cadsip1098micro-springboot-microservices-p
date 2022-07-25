@@ -4,6 +4,8 @@ import com.dedalow.cad.micro.commons.dto.pojo.ForceFailOutOutputSQLResultDataDto
 import com.dedalow.cad.micro.commons.dto.pojo.GetUsuarioTransOutOutputSQLResultDto;
 import com.dedalow.cad.micro.commons.dto.pojo.TestingTransactionalBcTestingTransactionalOutDataDto;
 import com.dedalow.cad.micro.commons.dto.response.BackendResponse;
+import com.dedalow.cad.micro.commons.dto.response.ForceFailOkResponseResponseDto;
+import com.dedalow.cad.micro.commons.dto.response.GetUsuarioTransOkResponseResponseDto;
 import com.dedalow.cad.micro.commons.dto.response.TestingTransactionalBcRetTransactionalOkResponseResponseDto;
 import com.dedalow.cad.micro.commons.dto.response.TestingTransactionalBcTestingTransactionalOkResponseResponseDto;
 import com.dedalow.cad.micro.commons.exception.CadException;
@@ -15,7 +17,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -31,18 +32,41 @@ public class TestingTransactionalBcServiceImpl implements TestingTransactionalBc
     Integer var = Integer.valueOf(10);
 
     List<ForceFailOutOutputSQLResultDataDto> userFail = new ArrayList<>();
+    BackendResponse<?> _backendResponse = null;
 
     boolean transactional_varExternal1 = false;
 
     try {
 
-      sqlService.executeDeleteUsuarioTransByName(username);
+      _backendResponse = sqlService.executeDeleteUsuarioTransByName(username);
 
-      allExternalCodesEcService.executeChangeVar(var);
+      if (!_backendResponse.isOk()) {
+        throw new CadException(_backendResponse.getMessage());
+      } else {
+
+      }
+
+      _backendResponse = allExternalCodesEcService.executeChangeVar(var);
+
+      if (!_backendResponse.isOk()) {
+        throw new CadException(_backendResponse.getMessage());
+      } else {
+
+      }
 
       transactional_varExternal1 = true;
 
-      userFail = sqlService.executeForceFail(username);
+      _backendResponse = sqlService.executeForceFail(username);
+
+      if (!_backendResponse.isOk()) {
+        throw new CadException(_backendResponse.getMessage());
+      } else {
+        userFail =
+            ObjectMapperUtil.convertValue(
+                    _backendResponse.getBody(),
+                    new TypeReference<ForceFailOkResponseResponseDto>() {})
+                .getOutputSQLResult();
+      }
 
       return BackendResponse.builder()
           .body(
@@ -50,12 +74,18 @@ public class TestingTransactionalBcServiceImpl implements TestingTransactionalBc
                   .var(var)
                   .build())
           .isOk(true)
-          .statusCode(HttpStatus.OK.value())
+          .statusCode(200)
           .build();
     } catch (Exception e) {
       if (transactional_varExternal1) {
 
-        allExternalCodesEcService.executeRollbackChangeVar(var);
+        _backendResponse = allExternalCodesEcService.executeRollbackChangeVar(var);
+
+        if (!_backendResponse.isOk()) {
+          throw new CadException(_backendResponse.getMessage());
+        } else {
+
+        }
       }
       throw new CadException(e.getMessage());
     }
@@ -64,29 +94,43 @@ public class TestingTransactionalBcServiceImpl implements TestingTransactionalBc
   @Override
   public BackendResponse<?> executeTestingTransactional(String username) throws CadException {
 
-    TestingTransactionalBcRetTransactionalOkResponseResponseDto call = null;
+    Integer call = null;
 
     GetUsuarioTransOutOutputSQLResultDto usuario = null;
     BackendResponse<?> _backendResponse = null;
 
     try {
+
       _backendResponse = testingTransactionalBcService.executeRetTransactional(username);
 
       if (!_backendResponse.isOk()) {
         throw new CadException(_backendResponse.getMessage());
       } else {
-
         call =
             ObjectMapperUtil.convertValue(
-                _backendResponse.getBody(),
-                new TypeReference<
-                    TestingTransactionalBcRetTransactionalOkResponseResponseDto>() {});
+                ObjectMapperUtil.convertValue(
+                        _backendResponse.getBody(),
+                        new TypeReference<
+                            TestingTransactionalBcRetTransactionalOkResponseResponseDto>() {})
+                    .getVar(),
+                new TypeReference<Integer>() {});
       }
+
     } catch (Exception e) {
     }
     try {
 
-      usuario = sqlService.executeGetUsuarioTrans(username);
+      _backendResponse = sqlService.executeGetUsuarioTrans(username);
+
+      if (!_backendResponse.isOk()) {
+        throw new CadException(_backendResponse.getMessage());
+      } else {
+        usuario =
+            ObjectMapperUtil.convertValue(
+                    _backendResponse.getBody(),
+                    new TypeReference<GetUsuarioTransOkResponseResponseDto>() {})
+                .getOutputSQLResult();
+      }
 
     } catch (Exception e) {
     }
@@ -100,7 +144,7 @@ public class TestingTransactionalBcServiceImpl implements TestingTransactionalBc
                             TestingTransactionalBcTestingTransactionalOutDataDto>() {}))
                 .build())
         .isOk(true)
-        .statusCode(HttpStatus.OK.value())
+        .statusCode(200)
         .build();
   }
 }

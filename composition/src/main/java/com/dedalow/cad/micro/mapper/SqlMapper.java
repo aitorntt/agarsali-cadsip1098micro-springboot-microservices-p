@@ -1,20 +1,5 @@
 package com.dedalow.cad.micro.mapper;
 
-import com.dedalow.cad.micro.commons.dto.pojo.ForceFailOutOutputSQLResultDataDto;
-import com.dedalow.cad.micro.commons.dto.pojo.GetGenerosOutOutputSQLResultDataDto;
-import com.dedalow.cad.micro.commons.dto.pojo.GetIdByUsernameOutOutputSQLResultDto;
-import com.dedalow.cad.micro.commons.dto.pojo.GetPeliculasAllOutPeliculasAllDataDto;
-import com.dedalow.cad.micro.commons.dto.pojo.GetPeliculasMayor18OutOutputSQLResultDataDto;
-import com.dedalow.cad.micro.commons.dto.pojo.GetPeliculasMenor5Hasta18OutOutputSQLResultDataDto;
-import com.dedalow.cad.micro.commons.dto.pojo.GetPeliculasMenor5OutOutputSQLResultDataDto;
-import com.dedalow.cad.micro.commons.dto.pojo.GetSeriesMayor18OutOutputSQLResultDataDto;
-import com.dedalow.cad.micro.commons.dto.pojo.GetSeriesMenor5Hasta18OutOutputSQLResultDataDto;
-import com.dedalow.cad.micro.commons.dto.pojo.GetSeriesMenor5OutOutputSQLResultDataDto;
-import com.dedalow.cad.micro.commons.dto.pojo.GetTypeOutTypeDto;
-import com.dedalow.cad.micro.commons.dto.pojo.GetUserByUsernameOutOutputSQLResultDto;
-import com.dedalow.cad.micro.commons.dto.pojo.GetUsuarioOutOutputSQLResultDto;
-import com.dedalow.cad.micro.commons.dto.pojo.GetUsuarioTransOutOutputSQLResultDto;
-import com.dedalow.cad.micro.commons.dto.pojo.ShowProductsOutProductsDataDto;
 import com.dedalow.cad.micro.commons.dto.pojo.ValidateObjectsInUserDto;
 import com.dedalow.cad.micro.commons.dto.request.AddValidNameBodyRequestDto;
 import com.dedalow.cad.micro.commons.dto.request.DeleteUserBodyRequestDto;
@@ -35,28 +20,11 @@ import com.dedalow.cad.micro.commons.dto.request.ShowProductsBodyRequestDto;
 import com.dedalow.cad.micro.commons.dto.request.ValidateListBodyRequestDto;
 import com.dedalow.cad.micro.commons.dto.request.ValidateObjectsBodyRequestDto;
 import com.dedalow.cad.micro.commons.dto.request.ValidateTypesBodyRequestDto;
-import com.dedalow.cad.micro.commons.dto.response.ForceFailOkResponseResponseDto;
-import com.dedalow.cad.micro.commons.dto.response.GetGenerosOkResponseResponseDto;
-import com.dedalow.cad.micro.commons.dto.response.GetIdByUsernameOkResponseResponseDto;
-import com.dedalow.cad.micro.commons.dto.response.GetPeliculasAllOkResponseResponseDto;
-import com.dedalow.cad.micro.commons.dto.response.GetPeliculasMayor18OkResponseResponseDto;
-import com.dedalow.cad.micro.commons.dto.response.GetPeliculasMenor5Hasta18OkResponseResponseDto;
-import com.dedalow.cad.micro.commons.dto.response.GetPeliculasMenor5OkResponseResponseDto;
-import com.dedalow.cad.micro.commons.dto.response.GetSeriesMayor18OkResponseResponseDto;
-import com.dedalow.cad.micro.commons.dto.response.GetSeriesMenor5Hasta18OkResponseResponseDto;
-import com.dedalow.cad.micro.commons.dto.response.GetSeriesMenor5OkResponseResponseDto;
-import com.dedalow.cad.micro.commons.dto.response.GetTypeOkResponseResponseDto;
-import com.dedalow.cad.micro.commons.dto.response.GetUserByUsernameOkResponseResponseDto;
-import com.dedalow.cad.micro.commons.dto.response.GetUsuarioOkResponseResponseDto;
-import com.dedalow.cad.micro.commons.dto.response.GetUsuarioTransOkResponseResponseDto;
-import com.dedalow.cad.micro.commons.dto.response.ShowProductsOkResponseResponseDto;
+import com.dedalow.cad.micro.commons.dto.response.BackendResponse;
 import com.dedalow.cad.micro.commons.exception.CadException;
-import com.dedalow.cad.micro.commons.util.ObjectMapperUtil;
 import com.dedalow.cad.micro.proxy.SqlProxy;
-import com.fasterxml.jackson.core.type.TypeReference;
 import feign.FeignException;
 import java.math.BigDecimal;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -66,148 +34,242 @@ public class SqlMapper {
 
   @Autowired SqlProxy sqlProxy;
 
-  public void executeInsertUsuarioTest() throws CadException {
+  public BackendResponse<?> executeInsertUsuarioTest() throws CadException {
+
+    BackendResponse.BackendResponseBuilder<Object> backendResponseBuilder =
+        BackendResponse.builder();
 
     try {
-      sqlProxy.insertUsuarioTest();
+
+      ResponseEntity<?> response = sqlProxy.insertUsuarioTest();
+
+      backendResponseBuilder.statusCode(response.getStatusCode().value());
+      backendResponseBuilder.isOk(true);
+      backendResponseBuilder.body(response.getBody());
+
+      return backendResponseBuilder.build();
 
     } catch (FeignException e) {
       throw e;
     }
   }
 
-  public void executeInsertTitulosTest() throws CadException {
+  public BackendResponse<?> executeInsertTitulosTest() throws CadException {
+
+    BackendResponse.BackendResponseBuilder<Object> backendResponseBuilder =
+        BackendResponse.builder();
 
     try {
-      sqlProxy.insertTitulosTest();
+
+      ResponseEntity<?> response = sqlProxy.insertTitulosTest();
+
+      backendResponseBuilder.statusCode(response.getStatusCode().value());
+      backendResponseBuilder.isOk(true);
+      backendResponseBuilder.body(response.getBody());
+
+      return backendResponseBuilder.build();
 
     } catch (FeignException e) {
       throw e;
     }
   }
 
-  public void executeInsertGeneroTest() throws CadException {
+  public BackendResponse<?> executeInsertGeneroTest() throws CadException {
+
+    BackendResponse.BackendResponseBuilder<Object> backendResponseBuilder =
+        BackendResponse.builder();
 
     try {
-      sqlProxy.insertGeneroTest();
+
+      ResponseEntity<?> response = sqlProxy.insertGeneroTest();
+
+      backendResponseBuilder.statusCode(response.getStatusCode().value());
+      backendResponseBuilder.isOk(true);
+      backendResponseBuilder.body(response.getBody());
+
+      return backendResponseBuilder.build();
 
     } catch (FeignException e) {
       throw e;
     }
   }
 
-  public void executeInsertProductTest() throws CadException {
+  public BackendResponse<?> executeInsertProductTest() throws CadException {
+
+    BackendResponse.BackendResponseBuilder<Object> backendResponseBuilder =
+        BackendResponse.builder();
 
     try {
-      sqlProxy.insertProductTest();
+
+      ResponseEntity<?> response = sqlProxy.insertProductTest();
+
+      backendResponseBuilder.statusCode(response.getStatusCode().value());
+      backendResponseBuilder.isOk(true);
+      backendResponseBuilder.body(response.getBody());
+
+      return backendResponseBuilder.build();
 
     } catch (FeignException e) {
       throw e;
     }
   }
 
-  public void executeInsertTypeProductTest() throws CadException {
+  public BackendResponse<?> executeInsertTypeProductTest() throws CadException {
+
+    BackendResponse.BackendResponseBuilder<Object> backendResponseBuilder =
+        BackendResponse.builder();
 
     try {
-      sqlProxy.insertTypeProductTest();
+
+      ResponseEntity<?> response = sqlProxy.insertTypeProductTest();
+
+      backendResponseBuilder.statusCode(response.getStatusCode().value());
+      backendResponseBuilder.isOk(true);
+      backendResponseBuilder.body(response.getBody());
+
+      return backendResponseBuilder.build();
 
     } catch (FeignException e) {
       throw e;
     }
   }
 
-  public void executeInsertUsuarioTransTest() throws CadException {
+  public BackendResponse<?> executeInsertUsuarioTransTest() throws CadException {
+
+    BackendResponse.BackendResponseBuilder<Object> backendResponseBuilder =
+        BackendResponse.builder();
 
     try {
-      sqlProxy.insertUsuarioTransTest();
+
+      ResponseEntity<?> response = sqlProxy.insertUsuarioTransTest();
+
+      backendResponseBuilder.statusCode(response.getStatusCode().value());
+      backendResponseBuilder.isOk(true);
+      backendResponseBuilder.body(response.getBody());
+
+      return backendResponseBuilder.build();
 
     } catch (FeignException e) {
       throw e;
     }
   }
 
-  public GetUserByUsernameOutOutputSQLResultDto executeGetUserByUsername(String username)
-      throws CadException {
+  public BackendResponse<?> executeGetUserByUsername(String username) throws CadException {
 
     GetUserByUsernameBodyRequestDto bodyInput =
         GetUserByUsernameBodyRequestDto.builder().username(username).build();
 
+    BackendResponse.BackendResponseBuilder<Object> backendResponseBuilder =
+        BackendResponse.builder();
+
     try {
+
       ResponseEntity<?> response = sqlProxy.getUserByUsername(bodyInput);
 
-      return ObjectMapperUtil.convertValue(
-              response.getBody(), new TypeReference<GetUserByUsernameOkResponseResponseDto>() {})
-          .getOutputSQLResult();
+      backendResponseBuilder.statusCode(response.getStatusCode().value());
+      backendResponseBuilder.isOk(true);
+      backendResponseBuilder.body(response.getBody());
+
+      return backendResponseBuilder.build();
+
     } catch (FeignException e) {
       throw e;
     }
   }
 
-  public GetIdByUsernameOutOutputSQLResultDto executeGetIdByUsername(String username)
-      throws CadException {
+  public BackendResponse<?> executeGetIdByUsername(String username) throws CadException {
 
     GetIdByUsernameBodyRequestDto bodyInput =
         GetIdByUsernameBodyRequestDto.builder().username(username).build();
 
+    BackendResponse.BackendResponseBuilder<Object> backendResponseBuilder =
+        BackendResponse.builder();
+
     try {
+
       ResponseEntity<?> response = sqlProxy.getIdByUsername(bodyInput);
 
-      return ObjectMapperUtil.convertValue(
-              response.getBody(), new TypeReference<GetIdByUsernameOkResponseResponseDto>() {})
-          .getOutputSQLResult();
+      backendResponseBuilder.statusCode(response.getStatusCode().value());
+      backendResponseBuilder.isOk(true);
+      backendResponseBuilder.body(response.getBody());
+
+      return backendResponseBuilder.build();
+
     } catch (FeignException e) {
       throw e;
     }
   }
 
-  public void executeInsertUser(String username) throws CadException {
+  public BackendResponse<?> executeInsertUser(String username) throws CadException {
 
     InsertUserBodyRequestDto bodyInput =
         InsertUserBodyRequestDto.builder().username(username).build();
 
+    BackendResponse.BackendResponseBuilder<Object> backendResponseBuilder =
+        BackendResponse.builder();
+
     try {
-      sqlProxy.insertUser(bodyInput);
+
+      ResponseEntity<?> response = sqlProxy.insertUser(bodyInput);
+
+      backendResponseBuilder.statusCode(response.getStatusCode().value());
+      backendResponseBuilder.isOk(true);
+      backendResponseBuilder.body(response.getBody());
+
+      return backendResponseBuilder.build();
 
     } catch (FeignException e) {
       throw e;
     }
   }
 
-  public List<ForceFailOutOutputSQLResultDataDto> executeForceFail(String username)
-      throws CadException {
+  public BackendResponse<?> executeForceFail(String username) throws CadException {
 
     ForceFailBodyRequestDto bodyInput =
         ForceFailBodyRequestDto.builder().username(username).build();
 
+    BackendResponse.BackendResponseBuilder<Object> backendResponseBuilder =
+        BackendResponse.builder();
+
     try {
+
       ResponseEntity<?> response = sqlProxy.forceFail(bodyInput);
 
-      return ObjectMapperUtil.convertValue(
-              response.getBody(), new TypeReference<ForceFailOkResponseResponseDto>() {})
-          .getOutputSQLResult();
+      backendResponseBuilder.statusCode(response.getStatusCode().value());
+      backendResponseBuilder.isOk(true);
+      backendResponseBuilder.body(response.getBody());
+
+      return backendResponseBuilder.build();
+
     } catch (FeignException e) {
       throw e;
     }
   }
 
-  public GetUsuarioTransOutOutputSQLResultDto executeGetUsuarioTrans(String username)
-      throws CadException {
+  public BackendResponse<?> executeGetUsuarioTrans(String username) throws CadException {
 
     GetUsuarioTransBodyRequestDto bodyInput =
         GetUsuarioTransBodyRequestDto.builder().username(username).build();
 
+    BackendResponse.BackendResponseBuilder<Object> backendResponseBuilder =
+        BackendResponse.builder();
+
     try {
+
       ResponseEntity<?> response = sqlProxy.getUsuarioTrans(bodyInput);
 
-      return ObjectMapperUtil.convertValue(
-              response.getBody(), new TypeReference<GetUsuarioTransOkResponseResponseDto>() {})
-          .getOutputSQLResult();
+      backendResponseBuilder.statusCode(response.getStatusCode().value());
+      backendResponseBuilder.isOk(true);
+      backendResponseBuilder.body(response.getBody());
+
+      return backendResponseBuilder.build();
+
     } catch (FeignException e) {
       throw e;
     }
   }
 
-  public void executeSavePrice(BigDecimal price, String currency, Long productId)
+  public BackendResponse<?> executeSavePrice(BigDecimal price, String currency, Long productId)
       throws CadException {
 
     SavePriceBodyRequestDto bodyInput =
@@ -217,213 +279,311 @@ public class SqlMapper {
             .productId(productId)
             .build();
 
+    BackendResponse.BackendResponseBuilder<Object> backendResponseBuilder =
+        BackendResponse.builder();
+
     try {
-      sqlProxy.savePrice(bodyInput);
+
+      ResponseEntity<?> response = sqlProxy.savePrice(bodyInput);
+
+      backendResponseBuilder.statusCode(response.getStatusCode().value());
+      backendResponseBuilder.isOk(true);
+      backendResponseBuilder.body(response.getBody());
+
+      return backendResponseBuilder.build();
 
     } catch (FeignException e) {
       throw e;
     }
   }
 
-  public GetTypeOutTypeDto executeGetType(Long typeId) throws CadException {
+  public BackendResponse<?> executeGetType(Long typeId) throws CadException {
 
     GetTypeBodyRequestDto bodyInput = GetTypeBodyRequestDto.builder().typeId(typeId).build();
 
+    BackendResponse.BackendResponseBuilder<Object> backendResponseBuilder =
+        BackendResponse.builder();
+
     try {
+
       ResponseEntity<?> response = sqlProxy.getType(bodyInput);
 
-      return ObjectMapperUtil.convertValue(
-              response.getBody(), new TypeReference<GetTypeOkResponseResponseDto>() {})
-          .getType();
+      backendResponseBuilder.statusCode(response.getStatusCode().value());
+      backendResponseBuilder.isOk(true);
+      backendResponseBuilder.body(response.getBody());
+
+      return backendResponseBuilder.build();
+
     } catch (FeignException e) {
       throw e;
     }
   }
 
-  public List<ShowProductsOutProductsDataDto> executeShowProducts(Long typeId) throws CadException {
+  public BackendResponse<?> executeShowProducts(Long typeId) throws CadException {
 
     ShowProductsBodyRequestDto bodyInput =
         ShowProductsBodyRequestDto.builder().typeId(typeId).build();
 
+    BackendResponse.BackendResponseBuilder<Object> backendResponseBuilder =
+        BackendResponse.builder();
+
     try {
+
       ResponseEntity<?> response = sqlProxy.showProducts(bodyInput);
 
-      return ObjectMapperUtil.convertValue(
-              response.getBody(), new TypeReference<ShowProductsOkResponseResponseDto>() {})
-          .getProducts();
+      backendResponseBuilder.statusCode(response.getStatusCode().value());
+      backendResponseBuilder.isOk(true);
+      backendResponseBuilder.body(response.getBody());
+
+      return backendResponseBuilder.build();
+
     } catch (FeignException e) {
       throw e;
     }
   }
 
-  public void executeDeleteUser(String username) throws CadException {
+  public BackendResponse<?> executeDeleteUser(String username) throws CadException {
 
     DeleteUserBodyRequestDto bodyInput =
         DeleteUserBodyRequestDto.builder().username(username).build();
 
+    BackendResponse.BackendResponseBuilder<Object> backendResponseBuilder =
+        BackendResponse.builder();
+
     try {
-      sqlProxy.deleteUser(bodyInput);
+
+      ResponseEntity<?> response = sqlProxy.deleteUser(bodyInput);
+
+      backendResponseBuilder.statusCode(response.getStatusCode().value());
+      backendResponseBuilder.isOk(true);
+      backendResponseBuilder.body(response.getBody());
+
+      return backendResponseBuilder.build();
 
     } catch (FeignException e) {
       throw e;
     }
   }
 
-  public void executeDeleteUsuarioTransByName(String username) throws CadException {
+  public BackendResponse<?> executeDeleteUsuarioTransByName(String username) throws CadException {
 
     DeleteUsuarioTransByNameBodyRequestDto bodyInput =
         DeleteUsuarioTransByNameBodyRequestDto.builder().username(username).build();
 
+    BackendResponse.BackendResponseBuilder<Object> backendResponseBuilder =
+        BackendResponse.builder();
+
     try {
-      sqlProxy.deleteUsuarioTransByName(bodyInput);
+
+      ResponseEntity<?> response = sqlProxy.deleteUsuarioTransByName(bodyInput);
+
+      backendResponseBuilder.statusCode(response.getStatusCode().value());
+      backendResponseBuilder.isOk(true);
+      backendResponseBuilder.body(response.getBody());
+
+      return backendResponseBuilder.build();
 
     } catch (FeignException e) {
       throw e;
     }
   }
 
-  public GetUsuarioOutOutputSQLResultDto executeGetUsuario(String username) throws CadException {
+  public BackendResponse<?> executeGetUsuario(String username) throws CadException {
 
     GetUsuarioBodyRequestDto bodyInput =
         GetUsuarioBodyRequestDto.builder().username(username).build();
 
+    BackendResponse.BackendResponseBuilder<Object> backendResponseBuilder =
+        BackendResponse.builder();
+
     try {
+
       ResponseEntity<?> response = sqlProxy.getUsuario(bodyInput);
 
-      return ObjectMapperUtil.convertValue(
-              response.getBody(), new TypeReference<GetUsuarioOkResponseResponseDto>() {})
-          .getOutputSQLResult();
+      backendResponseBuilder.statusCode(response.getStatusCode().value());
+      backendResponseBuilder.isOk(true);
+      backendResponseBuilder.body(response.getBody());
+
+      return backendResponseBuilder.build();
+
     } catch (FeignException e) {
       throw e;
     }
   }
 
-  public List<GetGenerosOutOutputSQLResultDataDto> executeGetGeneros() throws CadException {
+  public BackendResponse<?> executeGetGeneros() throws CadException {
+
+    BackendResponse.BackendResponseBuilder<Object> backendResponseBuilder =
+        BackendResponse.builder();
 
     try {
+
       ResponseEntity<?> response = sqlProxy.getGeneros();
 
-      return ObjectMapperUtil.convertValue(
-              response.getBody(), new TypeReference<GetGenerosOkResponseResponseDto>() {})
-          .getOutputSQLResult();
+      backendResponseBuilder.statusCode(response.getStatusCode().value());
+      backendResponseBuilder.isOk(true);
+      backendResponseBuilder.body(response.getBody());
+
+      return backendResponseBuilder.build();
+
     } catch (FeignException e) {
       throw e;
     }
   }
 
-  public List<GetPeliculasMenor5OutOutputSQLResultDataDto> executeGetPeliculasMenor5(Long generoId)
-      throws CadException {
+  public BackendResponse<?> executeGetPeliculasMenor5(Long generoId) throws CadException {
 
     GetPeliculasMenor5BodyRequestDto bodyInput =
         GetPeliculasMenor5BodyRequestDto.builder().generoId(generoId).build();
 
+    BackendResponse.BackendResponseBuilder<Object> backendResponseBuilder =
+        BackendResponse.builder();
+
     try {
+
       ResponseEntity<?> response = sqlProxy.getPeliculasMenor5(bodyInput);
 
-      return ObjectMapperUtil.convertValue(
-              response.getBody(), new TypeReference<GetPeliculasMenor5OkResponseResponseDto>() {})
-          .getOutputSQLResult();
+      backendResponseBuilder.statusCode(response.getStatusCode().value());
+      backendResponseBuilder.isOk(true);
+      backendResponseBuilder.body(response.getBody());
+
+      return backendResponseBuilder.build();
+
     } catch (FeignException e) {
       throw e;
     }
   }
 
-  public List<GetPeliculasMenor5Hasta18OutOutputSQLResultDataDto> executeGetPeliculasMenor5Hasta18(
-      Long generoId) throws CadException {
+  public BackendResponse<?> executeGetPeliculasMenor5Hasta18(Long generoId) throws CadException {
 
     GetPeliculasMenor5Hasta18BodyRequestDto bodyInput =
         GetPeliculasMenor5Hasta18BodyRequestDto.builder().generoId(generoId).build();
 
+    BackendResponse.BackendResponseBuilder<Object> backendResponseBuilder =
+        BackendResponse.builder();
+
     try {
+
       ResponseEntity<?> response = sqlProxy.getPeliculasMenor5Hasta18(bodyInput);
 
-      return ObjectMapperUtil.convertValue(
-              response.getBody(),
-              new TypeReference<GetPeliculasMenor5Hasta18OkResponseResponseDto>() {})
-          .getOutputSQLResult();
+      backendResponseBuilder.statusCode(response.getStatusCode().value());
+      backendResponseBuilder.isOk(true);
+      backendResponseBuilder.body(response.getBody());
+
+      return backendResponseBuilder.build();
+
     } catch (FeignException e) {
       throw e;
     }
   }
 
-  public List<GetPeliculasMayor18OutOutputSQLResultDataDto> executeGetPeliculasMayor18(
-      Long generoId) throws CadException {
+  public BackendResponse<?> executeGetPeliculasMayor18(Long generoId) throws CadException {
 
     GetPeliculasMayor18BodyRequestDto bodyInput =
         GetPeliculasMayor18BodyRequestDto.builder().generoId(generoId).build();
 
+    BackendResponse.BackendResponseBuilder<Object> backendResponseBuilder =
+        BackendResponse.builder();
+
     try {
+
       ResponseEntity<?> response = sqlProxy.getPeliculasMayor18(bodyInput);
 
-      return ObjectMapperUtil.convertValue(
-              response.getBody(), new TypeReference<GetPeliculasMayor18OkResponseResponseDto>() {})
-          .getOutputSQLResult();
+      backendResponseBuilder.statusCode(response.getStatusCode().value());
+      backendResponseBuilder.isOk(true);
+      backendResponseBuilder.body(response.getBody());
+
+      return backendResponseBuilder.build();
+
     } catch (FeignException e) {
       throw e;
     }
   }
 
-  public List<GetPeliculasAllOutPeliculasAllDataDto> executeGetPeliculasAll(Long generoId)
-      throws CadException {
+  public BackendResponse<?> executeGetPeliculasAll(Long generoId) throws CadException {
 
     GetPeliculasAllBodyRequestDto bodyInput =
         GetPeliculasAllBodyRequestDto.builder().generoId(generoId).build();
 
+    BackendResponse.BackendResponseBuilder<Object> backendResponseBuilder =
+        BackendResponse.builder();
+
     try {
+
       ResponseEntity<?> response = sqlProxy.getPeliculasAll(bodyInput);
 
-      return ObjectMapperUtil.convertValue(
-              response.getBody(), new TypeReference<GetPeliculasAllOkResponseResponseDto>() {})
-          .getPeliculasAll();
+      backendResponseBuilder.statusCode(response.getStatusCode().value());
+      backendResponseBuilder.isOk(true);
+      backendResponseBuilder.body(response.getBody());
+
+      return backendResponseBuilder.build();
+
     } catch (FeignException e) {
       throw e;
     }
   }
 
-  public List<GetSeriesMenor5OutOutputSQLResultDataDto> executeGetSeriesMenor5()
-      throws CadException {
+  public BackendResponse<?> executeGetSeriesMenor5() throws CadException {
+
+    BackendResponse.BackendResponseBuilder<Object> backendResponseBuilder =
+        BackendResponse.builder();
 
     try {
+
       ResponseEntity<?> response = sqlProxy.getSeriesMenor5();
 
-      return ObjectMapperUtil.convertValue(
-              response.getBody(), new TypeReference<GetSeriesMenor5OkResponseResponseDto>() {})
-          .getOutputSQLResult();
+      backendResponseBuilder.statusCode(response.getStatusCode().value());
+      backendResponseBuilder.isOk(true);
+      backendResponseBuilder.body(response.getBody());
+
+      return backendResponseBuilder.build();
+
     } catch (FeignException e) {
       throw e;
     }
   }
 
-  public List<GetSeriesMenor5Hasta18OutOutputSQLResultDataDto> executeGetSeriesMenor5Hasta18()
-      throws CadException {
+  public BackendResponse<?> executeGetSeriesMenor5Hasta18() throws CadException {
+
+    BackendResponse.BackendResponseBuilder<Object> backendResponseBuilder =
+        BackendResponse.builder();
 
     try {
+
       ResponseEntity<?> response = sqlProxy.getSeriesMenor5Hasta18();
 
-      return ObjectMapperUtil.convertValue(
-              response.getBody(),
-              new TypeReference<GetSeriesMenor5Hasta18OkResponseResponseDto>() {})
-          .getOutputSQLResult();
+      backendResponseBuilder.statusCode(response.getStatusCode().value());
+      backendResponseBuilder.isOk(true);
+      backendResponseBuilder.body(response.getBody());
+
+      return backendResponseBuilder.build();
+
     } catch (FeignException e) {
       throw e;
     }
   }
 
-  public List<GetSeriesMayor18OutOutputSQLResultDataDto> executeGetSeriesMayor18()
-      throws CadException {
+  public BackendResponse<?> executeGetSeriesMayor18() throws CadException {
+
+    BackendResponse.BackendResponseBuilder<Object> backendResponseBuilder =
+        BackendResponse.builder();
 
     try {
+
       ResponseEntity<?> response = sqlProxy.getSeriesMayor18();
 
-      return ObjectMapperUtil.convertValue(
-              response.getBody(), new TypeReference<GetSeriesMayor18OkResponseResponseDto>() {})
-          .getOutputSQLResult();
+      backendResponseBuilder.statusCode(response.getStatusCode().value());
+      backendResponseBuilder.isOk(true);
+      backendResponseBuilder.body(response.getBody());
+
+      return backendResponseBuilder.build();
+
     } catch (FeignException e) {
       throw e;
     }
   }
 
-  public void executeValidateTypes(
+  public BackendResponse<?> executeValidateTypes(
       Boolean typeBoolean,
       BigDecimal typeDecimal,
       Integer typeInteger,
@@ -444,156 +604,307 @@ public class SqlMapper {
             .typeString(typeString)
             .build();
 
+    BackendResponse.BackendResponseBuilder<Object> backendResponseBuilder =
+        BackendResponse.builder();
+
     try {
-      sqlProxy.validateTypes(bodyInput);
+
+      ResponseEntity<?> response = sqlProxy.validateTypes(bodyInput);
+
+      backendResponseBuilder.statusCode(response.getStatusCode().value());
+      backendResponseBuilder.isOk(true);
+      backendResponseBuilder.body(response.getBody());
+
+      return backendResponseBuilder.build();
 
     } catch (FeignException e) {
       throw e;
     }
   }
 
-  public void executeValidateObjects(ValidateObjectsInUserDto user) throws CadException {
+  public BackendResponse<?> executeValidateObjects(ValidateObjectsInUserDto user)
+      throws CadException {
 
     ValidateObjectsBodyRequestDto bodyInput =
         ValidateObjectsBodyRequestDto.builder().user(user).build();
 
+    BackendResponse.BackendResponseBuilder<Object> backendResponseBuilder =
+        BackendResponse.builder();
+
     try {
-      sqlProxy.validateObjects(bodyInput);
+
+      ResponseEntity<?> response = sqlProxy.validateObjects(bodyInput);
+
+      backendResponseBuilder.statusCode(response.getStatusCode().value());
+      backendResponseBuilder.isOk(true);
+      backendResponseBuilder.body(response.getBody());
+
+      return backendResponseBuilder.build();
 
     } catch (FeignException e) {
       throw e;
     }
   }
 
-  public void executeValidateList(Integer price) throws CadException {
+  public BackendResponse<?> executeValidateList(Integer price) throws CadException {
 
     ValidateListBodyRequestDto bodyInput =
         ValidateListBodyRequestDto.builder().price(price).build();
 
+    BackendResponse.BackendResponseBuilder<Object> backendResponseBuilder =
+        BackendResponse.builder();
+
     try {
-      sqlProxy.validateList(bodyInput);
+
+      ResponseEntity<?> response = sqlProxy.validateList(bodyInput);
+
+      backendResponseBuilder.statusCode(response.getStatusCode().value());
+      backendResponseBuilder.isOk(true);
+      backendResponseBuilder.body(response.getBody());
+
+      return backendResponseBuilder.build();
 
     } catch (FeignException e) {
       throw e;
     }
   }
 
-  public void executeDeleteValidateTypes() throws CadException {
+  public BackendResponse<?> executeDeleteValidateTypes() throws CadException {
+
+    BackendResponse.BackendResponseBuilder<Object> backendResponseBuilder =
+        BackendResponse.builder();
 
     try {
-      sqlProxy.deleteValidateTypes();
+
+      ResponseEntity<?> response = sqlProxy.deleteValidateTypes();
+
+      backendResponseBuilder.statusCode(response.getStatusCode().value());
+      backendResponseBuilder.isOk(true);
+      backendResponseBuilder.body(response.getBody());
+
+      return backendResponseBuilder.build();
 
     } catch (FeignException e) {
       throw e;
     }
   }
 
-  public void executeDeleteValidateObjects() throws CadException {
+  public BackendResponse<?> executeDeleteValidateObjects() throws CadException {
+
+    BackendResponse.BackendResponseBuilder<Object> backendResponseBuilder =
+        BackendResponse.builder();
 
     try {
-      sqlProxy.deleteValidateObjects();
+
+      ResponseEntity<?> response = sqlProxy.deleteValidateObjects();
+
+      backendResponseBuilder.statusCode(response.getStatusCode().value());
+      backendResponseBuilder.isOk(true);
+      backendResponseBuilder.body(response.getBody());
+
+      return backendResponseBuilder.build();
 
     } catch (FeignException e) {
       throw e;
     }
   }
 
-  public void executeDeleteValidateList() throws CadException {
+  public BackendResponse<?> executeDeleteValidateList() throws CadException {
+
+    BackendResponse.BackendResponseBuilder<Object> backendResponseBuilder =
+        BackendResponse.builder();
 
     try {
-      sqlProxy.deleteValidateList();
+
+      ResponseEntity<?> response = sqlProxy.deleteValidateList();
+
+      backendResponseBuilder.statusCode(response.getStatusCode().value());
+      backendResponseBuilder.isOk(true);
+      backendResponseBuilder.body(response.getBody());
+
+      return backendResponseBuilder.build();
 
     } catch (FeignException e) {
       throw e;
     }
   }
 
-  public void executeAddValidName(String name) throws CadException {
+  public BackendResponse<?> executeAddValidName(String name) throws CadException {
 
     AddValidNameBodyRequestDto bodyInput = AddValidNameBodyRequestDto.builder().name(name).build();
 
+    BackendResponse.BackendResponseBuilder<Object> backendResponseBuilder =
+        BackendResponse.builder();
+
     try {
-      sqlProxy.addValidName(bodyInput);
+
+      ResponseEntity<?> response = sqlProxy.addValidName(bodyInput);
+
+      backendResponseBuilder.statusCode(response.getStatusCode().value());
+      backendResponseBuilder.isOk(true);
+      backendResponseBuilder.body(response.getBody());
+
+      return backendResponseBuilder.build();
 
     } catch (FeignException e) {
       throw e;
     }
   }
 
-  public void executeDeleteUserTest() throws CadException {
+  public BackendResponse<?> executeDeleteUserTest() throws CadException {
+
+    BackendResponse.BackendResponseBuilder<Object> backendResponseBuilder =
+        BackendResponse.builder();
 
     try {
-      sqlProxy.deleteUserTest();
+
+      ResponseEntity<?> response = sqlProxy.deleteUserTest();
+
+      backendResponseBuilder.statusCode(response.getStatusCode().value());
+      backendResponseBuilder.isOk(true);
+      backendResponseBuilder.body(response.getBody());
+
+      return backendResponseBuilder.build();
 
     } catch (FeignException e) {
       throw e;
     }
   }
 
-  public void executeDeleteUsuarioTest() throws CadException {
+  public BackendResponse<?> executeDeleteUsuarioTest() throws CadException {
+
+    BackendResponse.BackendResponseBuilder<Object> backendResponseBuilder =
+        BackendResponse.builder();
 
     try {
-      sqlProxy.deleteUsuarioTest();
+
+      ResponseEntity<?> response = sqlProxy.deleteUsuarioTest();
+
+      backendResponseBuilder.statusCode(response.getStatusCode().value());
+      backendResponseBuilder.isOk(true);
+      backendResponseBuilder.body(response.getBody());
+
+      return backendResponseBuilder.build();
 
     } catch (FeignException e) {
       throw e;
     }
   }
 
-  public void executeDeleteTitulosTest() throws CadException {
+  public BackendResponse<?> executeDeleteTitulosTest() throws CadException {
+
+    BackendResponse.BackendResponseBuilder<Object> backendResponseBuilder =
+        BackendResponse.builder();
 
     try {
-      sqlProxy.deleteTitulosTest();
+
+      ResponseEntity<?> response = sqlProxy.deleteTitulosTest();
+
+      backendResponseBuilder.statusCode(response.getStatusCode().value());
+      backendResponseBuilder.isOk(true);
+      backendResponseBuilder.body(response.getBody());
+
+      return backendResponseBuilder.build();
 
     } catch (FeignException e) {
       throw e;
     }
   }
 
-  public void executeDeleteGeneroTest() throws CadException {
+  public BackendResponse<?> executeDeleteGeneroTest() throws CadException {
+
+    BackendResponse.BackendResponseBuilder<Object> backendResponseBuilder =
+        BackendResponse.builder();
 
     try {
-      sqlProxy.deleteGeneroTest();
+
+      ResponseEntity<?> response = sqlProxy.deleteGeneroTest();
+
+      backendResponseBuilder.statusCode(response.getStatusCode().value());
+      backendResponseBuilder.isOk(true);
+      backendResponseBuilder.body(response.getBody());
+
+      return backendResponseBuilder.build();
 
     } catch (FeignException e) {
       throw e;
     }
   }
 
-  public void executeDeleteProductTest() throws CadException {
+  public BackendResponse<?> executeDeleteProductTest() throws CadException {
+
+    BackendResponse.BackendResponseBuilder<Object> backendResponseBuilder =
+        BackendResponse.builder();
 
     try {
-      sqlProxy.deleteProductTest();
+
+      ResponseEntity<?> response = sqlProxy.deleteProductTest();
+
+      backendResponseBuilder.statusCode(response.getStatusCode().value());
+      backendResponseBuilder.isOk(true);
+      backendResponseBuilder.body(response.getBody());
+
+      return backendResponseBuilder.build();
 
     } catch (FeignException e) {
       throw e;
     }
   }
 
-  public void executeDeleteTypeProductTest() throws CadException {
+  public BackendResponse<?> executeDeleteTypeProductTest() throws CadException {
+
+    BackendResponse.BackendResponseBuilder<Object> backendResponseBuilder =
+        BackendResponse.builder();
 
     try {
-      sqlProxy.deleteTypeProductTest();
+
+      ResponseEntity<?> response = sqlProxy.deleteTypeProductTest();
+
+      backendResponseBuilder.statusCode(response.getStatusCode().value());
+      backendResponseBuilder.isOk(true);
+      backendResponseBuilder.body(response.getBody());
+
+      return backendResponseBuilder.build();
 
     } catch (FeignException e) {
       throw e;
     }
   }
 
-  public void executeDeleteUsuarioTransTest() throws CadException {
+  public BackendResponse<?> executeDeleteUsuarioTransTest() throws CadException {
+
+    BackendResponse.BackendResponseBuilder<Object> backendResponseBuilder =
+        BackendResponse.builder();
 
     try {
-      sqlProxy.deleteUsuarioTransTest();
+
+      ResponseEntity<?> response = sqlProxy.deleteUsuarioTransTest();
+
+      backendResponseBuilder.statusCode(response.getStatusCode().value());
+      backendResponseBuilder.isOk(true);
+      backendResponseBuilder.body(response.getBody());
+
+      return backendResponseBuilder.build();
 
     } catch (FeignException e) {
       throw e;
     }
   }
 
-  public void executeInsertUsertTest() throws CadException {
+  public BackendResponse<?> executeInsertUsertTest() throws CadException {
+
+    BackendResponse.BackendResponseBuilder<Object> backendResponseBuilder =
+        BackendResponse.builder();
 
     try {
-      sqlProxy.insertUsertTest();
+
+      ResponseEntity<?> response = sqlProxy.insertUsertTest();
+
+      backendResponseBuilder.statusCode(response.getStatusCode().value());
+      backendResponseBuilder.isOk(true);
+      backendResponseBuilder.body(response.getBody());
+
+      return backendResponseBuilder.build();
 
     } catch (FeignException e) {
       throw e;

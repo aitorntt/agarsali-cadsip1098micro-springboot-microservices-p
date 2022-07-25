@@ -8,7 +8,10 @@ import com.dedalow.cad.micro.commons.dto.pojo.TestingTypesBcValidateTypesInTypeO
 import com.dedalow.cad.micro.commons.dto.pojo.ValidateObjectsInUserDto;
 import com.dedalow.cad.micro.commons.dto.pojo.ValidateTypesRestRiMicroRestInTypeListFixObject1557Dto;
 import com.dedalow.cad.micro.commons.dto.pojo.ValidateTypesRestRiMicroRestInTypeObjectDto;
+import com.dedalow.cad.micro.commons.dto.pojo.ValidateTypesRestRiMicroRestOutDataDto;
 import com.dedalow.cad.micro.commons.dto.response.BackendResponse;
+import com.dedalow.cad.micro.commons.dto.response.EmptyResponse;
+import com.dedalow.cad.micro.commons.dto.response.GetUsuarioOkResponseResponseDto;
 import com.dedalow.cad.micro.commons.dto.response.TestingTypesBcValidateTypesOkResponseResponseDto;
 import com.dedalow.cad.micro.commons.dto.response.ValidateTypesRestRiMicroRestOkResponseDto;
 import com.dedalow.cad.micro.commons.exception.CadException;
@@ -45,43 +48,76 @@ public class TestingTypesBcServiceImpl implements TestingTypesBcService {
       throws CadException {
 
     GetUsuarioOutOutputSQLResultDto usuario = null;
-
-    ValidateTypesRestRiMicroRestOkResponseDto rest = null;
+    ValidateTypesRestRiMicroRestOutDataDto rest = null;
     BackendResponse<?> _backendResponse = null;
 
     try {
 
-      sqlService.executeValidateTypes(
-          typeBoolean, typeDecimal, typeInteger, typeLong, typeLongText, typePassword, typeString);
+      _backendResponse =
+          sqlService.executeValidateTypes(
+              typeBoolean,
+              typeDecimal,
+              typeInteger,
+              typeLong,
+              typeLongText,
+              typePassword,
+              typeString);
+      if (!_backendResponse.isOk()) {
+        throw new CadException(_backendResponse.getMessage());
+      } else {
+
+      }
 
     } catch (Exception e) {
       throw new CadException("ERR-COMP-001", e.getCause());
     }
     try {
 
-      usuario = sqlService.executeGetUsuario(typeString);
+      _backendResponse = sqlService.executeGetUsuario(typeString);
+
+      if (!_backendResponse.isOk()) {
+        throw new CadException(_backendResponse.getMessage());
+      } else {
+        usuario =
+            ObjectMapperUtil.convertValue(
+                    _backendResponse.getBody(),
+                    new TypeReference<GetUsuarioOkResponseResponseDto>() {})
+                .getOutputSQLResult();
+      }
 
     } catch (Exception e) {
       throw new CadException("ERR-COMP-001", e.getCause());
     }
     try {
 
-      sqlService.executeValidateObjects(
-          ValidateObjectsInUserDto.builder()
-              .name(usuario.getNombre())
-              .age(usuario.getEdad())
-              .build());
+      _backendResponse =
+          sqlService.executeValidateObjects(
+              ValidateObjectsInUserDto.builder()
+                  .name(usuario.getNombre())
+                  .age(usuario.getEdad())
+                  .build());
+      if (!_backendResponse.isOk()) {
+        throw new CadException(_backendResponse.getMessage());
+      } else {
+
+      }
 
     } catch (Exception e) {
       throw new CadException("ERR-COMP-001", e.getCause());
     }
     try {
 
-      sqlService.executeValidateObjects(
-          ValidateObjectsInUserDto.builder()
-              .name(typeObject.getNombre())
-              .age(typeObject.getEdad())
-              .build());
+      _backendResponse =
+          sqlService.executeValidateObjects(
+              ValidateObjectsInUserDto.builder()
+                  .name(typeObject.getNombre())
+                  .age(typeObject.getEdad())
+                  .build());
+      if (!_backendResponse.isOk()) {
+        throw new CadException(_backendResponse.getMessage());
+      } else {
+
+      }
 
     } catch (Exception e) {
       throw new CadException("ERR-COMP-001", e.getCause());
@@ -90,7 +126,13 @@ public class TestingTypesBcServiceImpl implements TestingTypesBcService {
     do {
       try {
 
-        sqlService.executeValidateList(typeList.get(i).getPrice());
+        _backendResponse = sqlService.executeValidateList(typeList.get(i).getPrice());
+
+        if (!_backendResponse.isOk()) {
+          throw new CadException(_backendResponse.getMessage());
+        } else {
+
+        }
 
       } catch (Exception e) {
         throw new CadException("ERR-COMP-001", e.getCause());
@@ -100,24 +142,32 @@ public class TestingTypesBcServiceImpl implements TestingTypesBcService {
 
     try {
 
-      allExternalCodesEcService.executeValidateTypes(
-          typeBoolean,
-          typeDecimal,
-          typeInteger,
-          ObjectMapperUtil.convertValue(
-              typeList,
-              new TypeReference<List<AllExternalCodesEcValidateTypesInTypeListDataDto>>() {}),
-          typeLong,
-          typeLongText,
-          ObjectMapperUtil.convertValue(
-              typeObject, new TypeReference<AllExternalCodesEcValidateTypesInTypeObjectDto>() {}),
-          typePassword,
-          typeString);
+      _backendResponse =
+          allExternalCodesEcService.executeValidateTypes(
+              typeBoolean,
+              typeDecimal,
+              typeInteger,
+              ObjectMapperUtil.convertValue(
+                  typeList,
+                  new TypeReference<List<AllExternalCodesEcValidateTypesInTypeListDataDto>>() {}),
+              typeLong,
+              typeLongText,
+              ObjectMapperUtil.convertValue(
+                  typeObject,
+                  new TypeReference<AllExternalCodesEcValidateTypesInTypeObjectDto>() {}),
+              typePassword,
+              typeString);
+      if (!_backendResponse.isOk()) {
+        throw new CadException(_backendResponse.getMessage());
+      } else {
+
+      }
 
     } catch (Exception e) {
       throw new CadException("ERR-COMP-001", e.getCause());
     }
     try {
+
       _backendResponse =
           validateTypesRestRiService.executeMicroRest(
               typeBoolean,
@@ -136,77 +186,121 @@ public class TestingTypesBcServiceImpl implements TestingTypesBcService {
       if (!_backendResponse.isOk()) {
         throw new CadException(_backendResponse.getMessage());
       } else {
-
         rest =
             ObjectMapperUtil.convertValue(
-                _backendResponse.getBody(),
-                new TypeReference<ValidateTypesRestRiMicroRestOkResponseDto>() {});
+                ObjectMapperUtil.convertValue(
+                        _backendResponse.getBody(),
+                        new TypeReference<ValidateTypesRestRiMicroRestOkResponseDto>() {})
+                    .getData(),
+                new TypeReference<ValidateTypesRestRiMicroRestOutDataDto>() {});
       }
+
     } catch (Exception e) {
       throw new CadException("error validateRest", e.getCause());
     }
     try {
 
-      allExternalCodesEcService.executeEmptyExternal(rest.getData().getTypeValue());
+      _backendResponse = allExternalCodesEcService.executeEmptyExternal(rest.getTypeValue());
+
+      if (!_backendResponse.isOk()) {
+        throw new CadException(_backendResponse.getMessage());
+      } else {
+
+      }
 
     } catch (Exception e) {
       throw new CadException("ERR-COMP-001", e.getCause());
     }
     try {
 
-      sqlService.executeValidateObjects(
-          ValidateObjectsInUserDto.builder()
-              .name(rest.getData().getTypeName())
-              .age(rest.getData().getTypeValue())
-              .build());
+      _backendResponse =
+          sqlService.executeValidateObjects(
+              ValidateObjectsInUserDto.builder()
+                  .name(rest.getTypeName())
+                  .age(rest.getTypeValue())
+                  .build());
+      if (!_backendResponse.isOk()) {
+        throw new CadException(_backendResponse.getMessage());
+      } else {
+
+      }
 
     } catch (Exception e) {
       throw new CadException("ERR-COMP-001", e.getCause());
     }
-    for (Integer z = 0; z < rest.getData().getAddress().size(); z++) {
+    for (Integer z = 0; z < rest.getAddress().size(); z++) {
       try {
 
-        allExternalCodesEcService.executeEmptyExternal(rest.getData().getAddress().get(z).getNum());
+        _backendResponse =
+            allExternalCodesEcService.executeEmptyExternal(rest.getAddress().get(z).getNum());
+
+        if (!_backendResponse.isOk()) {
+          throw new CadException(_backendResponse.getMessage());
+        } else {
+
+        }
 
       } catch (Exception e) {
         throw new CadException("ERR-COMP-001", e.getCause());
       }
     }
-    if (rest.getData().getTypeValue() < 10) {
+    if (rest.getTypeValue() < 10) {
 
     } else {
     }
     return BackendResponse.builder()
         .body(
             TestingTypesBcValidateTypesOkResponseResponseDto.builder()
-                .typeName(rest.getData().getTypeName())
-                .typeValue(rest.getData().getTypeValue())
+                .typeName(rest.getTypeName())
+                .typeValue(rest.getTypeValue())
                 .build())
         .isOk(true)
-        .statusCode(HttpStatus.OK.value())
+        .statusCode(200)
         .build();
   }
 
   @Override
-  public void executeDeleteAll() throws CadException {
+  public BackendResponse<?> executeDeleteAll() throws CadException {
+
+    BackendResponse<?> _backendResponse = null;
 
     try {
 
-      sqlService.executeDeleteValidateTypes();
+      _backendResponse = sqlService.executeDeleteValidateTypes();
+      if (!_backendResponse.isOk()) {
+        throw new CadException(_backendResponse.getMessage());
+      } else {
+
+      }
 
     } catch (Exception e) {
     }
     try {
 
-      sqlService.executeDeleteValidateObjects();
+      _backendResponse = sqlService.executeDeleteValidateObjects();
+      if (!_backendResponse.isOk()) {
+        throw new CadException(_backendResponse.getMessage());
+      } else {
+
+      }
 
     } catch (Exception e) {
     }
     try {
 
-      sqlService.executeDeleteValidateList();
+      _backendResponse = sqlService.executeDeleteValidateList();
+      if (!_backendResponse.isOk()) {
+        throw new CadException(_backendResponse.getMessage());
+      } else {
+
+      }
 
     } catch (Exception e) {
     }
+    return BackendResponse.builder()
+        .body(new EmptyResponse())
+        .isOk(true)
+        .statusCode(HttpStatus.OK.value())
+        .build();
   }
 }

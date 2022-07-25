@@ -1,19 +1,19 @@
 package com.dedalow.cad.micro.services;
 
+import com.dedalow.cad.micro.commons.dto.response.BackendResponse;
 import com.dedalow.cad.micro.commons.model.User;
-import java.util.List;
 
 public interface UserCRUDService {
 
-  public User executeGetUser(Long id);
+  public BackendResponse<?> executeDeleteUserCrud(Long id);
 
-  public User executeUpdateUser(Long id, User inputDomain);
+  public BackendResponse<?> executeGetAllUsers();
 
-  public void executeDeleteUserCrud(Long id);
+  public BackendResponse<?> executeAddUserCrud(User inputDomain);
 
-  public List<com.dedalow.cad.micro.commons.model.User> executeGetAllUsers();
+  public BackendResponse<?> executeUpdateUser(Long id, User inputDomain);
 
-  public User executeAddUserCrud(User inputDomain);
+  public BackendResponse<?> executeGetUser(Long id);
 
   long countAll();
 }

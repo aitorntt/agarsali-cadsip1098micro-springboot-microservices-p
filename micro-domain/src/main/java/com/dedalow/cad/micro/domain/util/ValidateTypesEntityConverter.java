@@ -1,11 +1,17 @@
 package com.dedalow.cad.micro.domain.util;
 
+import com.dedalow.cad.micro.commons.services.EncodeService;
 import com.dedalow.cad.micro.domain.internal.*;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ValidateTypesEntityConverter {
+
+  private static EncodeService encodeService;
 
   public static com.dedalow.cad.micro.commons.model.ValidateTypes convertToModel(
       ValidateTypes validateTypes) {
@@ -47,7 +53,7 @@ public class ValidateTypesEntityConverter {
 
     validateTypesEntity.setTypeLongText(validateTypes.getTypeLongText());
 
-    validateTypesEntity.setTypePassword(validateTypes.getTypePassword());
+    validateTypesEntity.setTypePassword(encodeService.encode(validateTypes.getTypePassword()));
 
     validateTypesEntity.setTypeString(validateTypes.getTypeString());
     return validateTypesEntity;
@@ -118,5 +124,10 @@ public class ValidateTypesEntityConverter {
       validateTypesEntityList.add(convertToEntityWithRelations(validateTypes));
     }
     return validateTypesEntityList;
+  }
+
+  @Autowired
+  public void setEncodeService(EncodeService encodeService) {
+    ValidateTypesEntityConverter.encodeService = encodeService;
   }
 }

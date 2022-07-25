@@ -1,11 +1,17 @@
 package com.dedalow.cad.micro.domain.util;
 
+import com.dedalow.cad.micro.commons.services.EncodeService;
 import com.dedalow.cad.micro.domain.internal.*;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ValidateListEntityConverter {
+
+  private static EncodeService encodeService;
 
   public static com.dedalow.cad.micro.commons.model.ValidateList convertToModel(
       ValidateList validateList) {
@@ -94,5 +100,10 @@ public class ValidateListEntityConverter {
       validateListEntityList.add(convertToEntityWithRelations(validateList));
     }
     return validateListEntityList;
+  }
+
+  @Autowired
+  public void setEncodeService(EncodeService encodeService) {
+    ValidateListEntityConverter.encodeService = encodeService;
   }
 }

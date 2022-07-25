@@ -14,7 +14,17 @@ import com.dedalow.cad.micro.commons.dto.pojo.TestingConditionalLoopBcTestingCon
 import com.dedalow.cad.micro.commons.dto.pojo.TestingConditionalLoopBcTestingConditionalLoopOutInfoSeriesSeriesFixList1557Dto;
 import com.dedalow.cad.micro.commons.dto.pojo.TestingConditionalLoopBcTestingConditionalLoopStartGenerosFinalDataDto;
 import com.dedalow.cad.micro.commons.dto.pojo.TestingConditionalLoopBcTestingConditionalLoopStartPeliculasFinalPeliculaDto;
+import com.dedalow.cad.micro.commons.dto.response.AllExternalCodesEcAddGenerosOkResponseResponseDto;
 import com.dedalow.cad.micro.commons.dto.response.BackendResponse;
+import com.dedalow.cad.micro.commons.dto.response.GetGenerosOkResponseResponseDto;
+import com.dedalow.cad.micro.commons.dto.response.GetPeliculasAllOkResponseResponseDto;
+import com.dedalow.cad.micro.commons.dto.response.GetPeliculasMayor18OkResponseResponseDto;
+import com.dedalow.cad.micro.commons.dto.response.GetPeliculasMenor5Hasta18OkResponseResponseDto;
+import com.dedalow.cad.micro.commons.dto.response.GetPeliculasMenor5OkResponseResponseDto;
+import com.dedalow.cad.micro.commons.dto.response.GetSeriesMayor18OkResponseResponseDto;
+import com.dedalow.cad.micro.commons.dto.response.GetSeriesMenor5Hasta18OkResponseResponseDto;
+import com.dedalow.cad.micro.commons.dto.response.GetSeriesMenor5OkResponseResponseDto;
+import com.dedalow.cad.micro.commons.dto.response.GetUsuarioOkResponseResponseDto;
 import com.dedalow.cad.micro.commons.dto.response.TestingConditionalLoopBcTestingConditionalLoopOkResponseResponseDto;
 import com.dedalow.cad.micro.commons.exception.CadException;
 import com.dedalow.cad.micro.commons.operatorBlocks.OperatorBlockDivision;
@@ -28,7 +38,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -52,16 +61,36 @@ public class TestingConditionalLoopBcServiceImpl implements TestingConditionalLo
     List<GetPeliculasAllOutPeliculasAllDataDto> peliculasAll = new ArrayList<>();
     List<GetSeriesMenor5OutOutputSQLResultDataDto> series = new ArrayList<>();
     BigDecimal valoracionMediaSeries = new BigDecimal(0);
+    BackendResponse<?> _backendResponse = null;
 
     try {
 
-      user = sqlService.executeGetUsuario(username);
+      _backendResponse = sqlService.executeGetUsuario(username);
+
+      if (!_backendResponse.isOk()) {
+        throw new CadException(_backendResponse.getMessage());
+      } else {
+        user =
+            ObjectMapperUtil.convertValue(
+                    _backendResponse.getBody(),
+                    new TypeReference<GetUsuarioOkResponseResponseDto>() {})
+                .getOutputSQLResult();
+      }
 
     } catch (Exception e) {
     }
     try {
 
-      generos = sqlService.executeGetGeneros();
+      _backendResponse = sqlService.executeGetGeneros();
+      if (!_backendResponse.isOk()) {
+        throw new CadException(_backendResponse.getMessage());
+      } else {
+        generos =
+            ObjectMapperUtil.convertValue(
+                    _backendResponse.getBody(),
+                    new TypeReference<GetGenerosOkResponseResponseDto>() {})
+                .getOutputSQLResult();
+      }
 
     } catch (Exception e) {
     }
@@ -75,17 +104,37 @@ public class TestingConditionalLoopBcServiceImpl implements TestingConditionalLo
 
           try {
 
-            peliculas = sqlService.executeGetPeliculasMenor5(generos.get(i).getId());
+            _backendResponse = sqlService.executeGetPeliculasMenor5(generos.get(i).getId());
+
+            if (!_backendResponse.isOk()) {
+              throw new CadException(_backendResponse.getMessage());
+            } else {
+              peliculas =
+                  ObjectMapperUtil.convertValue(
+                          _backendResponse.getBody(),
+                          new TypeReference<GetPeliculasMenor5OkResponseResponseDto>() {})
+                      .getOutputSQLResult();
+            }
 
           } catch (Exception e) {
           }
         } else {
           try {
 
-            peliculas =
-                ObjectMapperUtil.convertValue(
-                    sqlService.executeGetPeliculasMenor5Hasta18(generos.get(i).getId()),
-                    new TypeReference<List<GetPeliculasMenor5OutOutputSQLResultDataDto>>() {});
+            _backendResponse = sqlService.executeGetPeliculasMenor5Hasta18(generos.get(i).getId());
+
+            if (!_backendResponse.isOk()) {
+              throw new CadException(_backendResponse.getMessage());
+            } else {
+              peliculas =
+                  ObjectMapperUtil.convertValue(
+                      ObjectMapperUtil.convertValue(
+                              _backendResponse.getBody(),
+                              new TypeReference<
+                                  GetPeliculasMenor5Hasta18OkResponseResponseDto>() {})
+                          .getOutputSQLResult(),
+                      new TypeReference<List<GetPeliculasMenor5OutOutputSQLResultDataDto>>() {});
+            }
 
           } catch (Exception e) {
           }
@@ -93,17 +142,36 @@ public class TestingConditionalLoopBcServiceImpl implements TestingConditionalLo
       } else {
         try {
 
-          peliculas =
-              ObjectMapperUtil.convertValue(
-                  sqlService.executeGetPeliculasMayor18(generos.get(i).getId()),
-                  new TypeReference<List<GetPeliculasMenor5OutOutputSQLResultDataDto>>() {});
+          _backendResponse = sqlService.executeGetPeliculasMayor18(generos.get(i).getId());
+
+          if (!_backendResponse.isOk()) {
+            throw new CadException(_backendResponse.getMessage());
+          } else {
+            peliculas =
+                ObjectMapperUtil.convertValue(
+                    ObjectMapperUtil.convertValue(
+                            _backendResponse.getBody(),
+                            new TypeReference<GetPeliculasMayor18OkResponseResponseDto>() {})
+                        .getOutputSQLResult(),
+                    new TypeReference<List<GetPeliculasMenor5OutOutputSQLResultDataDto>>() {});
+          }
 
         } catch (Exception e) {
         }
       }
       try {
 
-        peliculasAll = sqlService.executeGetPeliculasAll(generos.get(i).getId());
+        _backendResponse = sqlService.executeGetPeliculasAll(generos.get(i).getId());
+
+        if (!_backendResponse.isOk()) {
+          throw new CadException(_backendResponse.getMessage());
+        } else {
+          peliculasAll =
+              ObjectMapperUtil.convertValue(
+                      _backendResponse.getBody(),
+                      new TypeReference<GetPeliculasAllOkResponseResponseDto>() {})
+                  .getPeliculasAll();
+        }
 
       } catch (Exception e) {
       }
@@ -134,21 +202,30 @@ public class TestingConditionalLoopBcServiceImpl implements TestingConditionalLo
       }
       try {
 
-        generosFinal =
-            ObjectMapperUtil.convertValue(
-                allExternalCodesEcService.executeAddGeneros(
-                    ObjectMapperUtil.convertValue(
-                        peliculasFinal,
-                        new TypeReference<
-                            List<AllExternalCodesEcAddGenerosInPeliculasDataDto>>() {}),
-                    valoracionMediaPeliculas,
-                    ObjectMapperUtil.convertValue(
-                        generosFinal,
-                        new TypeReference<List<AllExternalCodesEcAddGenerosInGenerosDataDto>>() {}),
-                    generos.get(i).getNombre()),
-                new TypeReference<
-                    List<
-                        TestingConditionalLoopBcTestingConditionalLoopStartGenerosFinalDataDto>>() {});
+        _backendResponse =
+            allExternalCodesEcService.executeAddGeneros(
+                ObjectMapperUtil.convertValue(
+                    peliculasFinal,
+                    new TypeReference<List<AllExternalCodesEcAddGenerosInPeliculasDataDto>>() {}),
+                valoracionMediaPeliculas,
+                ObjectMapperUtil.convertValue(
+                    generosFinal,
+                    new TypeReference<List<AllExternalCodesEcAddGenerosInGenerosDataDto>>() {}),
+                generos.get(i).getNombre());
+
+        if (!_backendResponse.isOk()) {
+          throw new CadException(_backendResponse.getMessage());
+        } else {
+          generosFinal =
+              ObjectMapperUtil.convertValue(
+                  ObjectMapperUtil.convertValue(
+                          _backendResponse.getBody(),
+                          new TypeReference<AllExternalCodesEcAddGenerosOkResponseResponseDto>() {})
+                      .getGeneros(),
+                  new TypeReference<
+                      List<
+                          TestingConditionalLoopBcTestingConditionalLoopStartGenerosFinalDataDto>>() {});
+        }
 
       } catch (Exception e) {
       }
@@ -161,17 +238,34 @@ public class TestingConditionalLoopBcServiceImpl implements TestingConditionalLo
 
         try {
 
-          series = sqlService.executeGetSeriesMenor5();
+          _backendResponse = sqlService.executeGetSeriesMenor5();
+          if (!_backendResponse.isOk()) {
+            throw new CadException(_backendResponse.getMessage());
+          } else {
+            series =
+                ObjectMapperUtil.convertValue(
+                        _backendResponse.getBody(),
+                        new TypeReference<GetSeriesMenor5OkResponseResponseDto>() {})
+                    .getOutputSQLResult();
+          }
 
         } catch (Exception e) {
         }
       } else {
         try {
 
-          series =
-              ObjectMapperUtil.convertValue(
-                  sqlService.executeGetSeriesMenor5Hasta18(),
-                  new TypeReference<List<GetSeriesMenor5OutOutputSQLResultDataDto>>() {});
+          _backendResponse = sqlService.executeGetSeriesMenor5Hasta18();
+          if (!_backendResponse.isOk()) {
+            throw new CadException(_backendResponse.getMessage());
+          } else {
+            series =
+                ObjectMapperUtil.convertValue(
+                    ObjectMapperUtil.convertValue(
+                            _backendResponse.getBody(),
+                            new TypeReference<GetSeriesMenor5Hasta18OkResponseResponseDto>() {})
+                        .getOutputSQLResult(),
+                    new TypeReference<List<GetSeriesMenor5OutOutputSQLResultDataDto>>() {});
+          }
 
         } catch (Exception e) {
         }
@@ -179,10 +273,18 @@ public class TestingConditionalLoopBcServiceImpl implements TestingConditionalLo
     } else {
       try {
 
-        series =
-            ObjectMapperUtil.convertValue(
-                sqlService.executeGetSeriesMayor18(),
-                new TypeReference<List<GetSeriesMenor5OutOutputSQLResultDataDto>>() {});
+        _backendResponse = sqlService.executeGetSeriesMayor18();
+        if (!_backendResponse.isOk()) {
+          throw new CadException(_backendResponse.getMessage());
+        } else {
+          series =
+              ObjectMapperUtil.convertValue(
+                  ObjectMapperUtil.convertValue(
+                          _backendResponse.getBody(),
+                          new TypeReference<GetSeriesMayor18OkResponseResponseDto>() {})
+                      .getOutputSQLResult(),
+                  new TypeReference<List<GetSeriesMenor5OutOutputSQLResultDataDto>>() {});
+        }
 
       } catch (Exception e) {
       }
@@ -230,7 +332,7 @@ public class TestingConditionalLoopBcServiceImpl implements TestingConditionalLo
                         .build())
                 .build())
         .isOk(true)
-        .statusCode(HttpStatus.OK.value())
+        .statusCode(200)
         .build();
   }
 }

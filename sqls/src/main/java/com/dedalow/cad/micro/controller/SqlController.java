@@ -29,26 +29,7 @@ import com.dedalow.cad.micro.commons.dto.request.ShowProductsBodyRequestDto;
 import com.dedalow.cad.micro.commons.dto.request.ValidateListBodyRequestDto;
 import com.dedalow.cad.micro.commons.dto.request.ValidateObjectsBodyRequestDto;
 import com.dedalow.cad.micro.commons.dto.request.ValidateTypesBodyRequestDto;
-import com.dedalow.cad.micro.commons.dto.response.ForceFailOkResponseResponseDto;
-import com.dedalow.cad.micro.commons.dto.response.GetGenerosOkResponseResponseDto;
-import com.dedalow.cad.micro.commons.dto.response.GetIdByUsernameOkResponseResponseDto;
-import com.dedalow.cad.micro.commons.dto.response.GetListUsuariosOkResponseResponseDto;
-import com.dedalow.cad.micro.commons.dto.response.GetPeliculasAllOkResponseResponseDto;
-import com.dedalow.cad.micro.commons.dto.response.GetPeliculasMayor18OkResponseResponseDto;
-import com.dedalow.cad.micro.commons.dto.response.GetPeliculasMenor5Hasta18OkResponseResponseDto;
-import com.dedalow.cad.micro.commons.dto.response.GetPeliculasMenor5OkResponseResponseDto;
-import com.dedalow.cad.micro.commons.dto.response.GetSeriesMayor18OkResponseResponseDto;
-import com.dedalow.cad.micro.commons.dto.response.GetSeriesMenor5Hasta18OkResponseResponseDto;
-import com.dedalow.cad.micro.commons.dto.response.GetSeriesMenor5OkResponseResponseDto;
-import com.dedalow.cad.micro.commons.dto.response.GetTitulosOkResponseResponseDto;
-import com.dedalow.cad.micro.commons.dto.response.GetTypeOkResponseResponseDto;
-import com.dedalow.cad.micro.commons.dto.response.GetTypesOkResponseResponseDto;
-import com.dedalow.cad.micro.commons.dto.response.GetUserByUsernameOkResponseResponseDto;
-import com.dedalow.cad.micro.commons.dto.response.GetUsuarioOkResponseResponseDto;
-import com.dedalow.cad.micro.commons.dto.response.GetUsuarioTransOkResponseResponseDto;
-import com.dedalow.cad.micro.commons.dto.response.GetUsuariosOkResponseResponseDto;
-import com.dedalow.cad.micro.commons.dto.response.GetUsuariosTransOkResponseResponseDto;
-import com.dedalow.cad.micro.commons.dto.response.ShowProductsOkResponseResponseDto;
+import com.dedalow.cad.micro.commons.dto.response.BackendResponse;
 import com.dedalow.cad.micro.commons.exception.CadException;
 import com.dedalow.cad.micro.commons.exception.ExceptionResponse;
 import com.dedalow.cad.micro.commons.services.ConfigService;
@@ -119,12 +100,9 @@ public class SqlController {
       }
       Long generoId = bodyRequest.getGeneroId();
 
-      GetPeliculasMenor5Hasta18OkResponseResponseDto response =
-          GetPeliculasMenor5Hasta18OkResponseResponseDto.builder()
-              .outputSQLResult(sqlService.executeGetPeliculasMenor5Hasta18(generoId))
-              .build();
+      BackendResponse<?> response = sqlService.executeGetPeliculasMenor5Hasta18(generoId);
 
-      return ResponseEntity.status(HttpStatus.OK).body(response);
+      return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
     } catch (Exception e) {
 
       ExceptionResponse exceptionResponse = configService.selectedException(e, "SQL");
@@ -157,12 +135,9 @@ public class SqlController {
       }
       String username = bodyRequest.getUsername();
 
-      ForceFailOkResponseResponseDto response =
-          ForceFailOkResponseResponseDto.builder()
-              .outputSQLResult(sqlService.executeForceFail(username))
-              .build();
+      BackendResponse<?> response = sqlService.executeForceFail(username);
 
-      return ResponseEntity.status(HttpStatus.OK).body(response);
+      return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
     } catch (Exception e) {
 
       ExceptionResponse exceptionResponse = configService.selectedException(e, "SQL");
@@ -279,12 +254,9 @@ public class SqlController {
 
     try {
 
-      GetUsuariosTransOkResponseResponseDto response =
-          GetUsuariosTransOkResponseResponseDto.builder()
-              .outputSQLResult(sqlService.executeGetUsuariosTrans())
-              .build();
+      BackendResponse<?> response = sqlService.executeGetUsuariosTrans();
 
-      return ResponseEntity.status(HttpStatus.OK).body(response);
+      return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
     } catch (Exception e) {
 
       ExceptionResponse exceptionResponse = configService.selectedException(e, "SQL");
@@ -342,12 +314,9 @@ public class SqlController {
       }
       String username = bodyRequest.getUsername();
 
-      GetUserByUsernameOkResponseResponseDto response =
-          GetUserByUsernameOkResponseResponseDto.builder()
-              .outputSQLResult(sqlService.executeGetUserByUsername(username))
-              .build();
+      BackendResponse<?> response = sqlService.executeGetUserByUsername(username);
 
-      return ResponseEntity.status(HttpStatus.OK).body(response);
+      return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
     } catch (Exception e) {
 
       ExceptionResponse exceptionResponse = configService.selectedException(e, "SQL");
@@ -474,12 +443,9 @@ public class SqlController {
       }
       String username = bodyRequest.getUsername();
 
-      GetIdByUsernameOkResponseResponseDto response =
-          GetIdByUsernameOkResponseResponseDto.builder()
-              .outputSQLResult(sqlService.executeGetIdByUsername(username))
-              .build();
+      BackendResponse<?> response = sqlService.executeGetIdByUsername(username);
 
-      return ResponseEntity.status(HttpStatus.OK).body(response);
+      return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
     } catch (Exception e) {
 
       ExceptionResponse exceptionResponse = configService.selectedException(e, "SQL");
@@ -512,12 +478,9 @@ public class SqlController {
       }
       String username = bodyRequest.getUsername();
 
-      GetUsuarioOkResponseResponseDto response =
-          GetUsuarioOkResponseResponseDto.builder()
-              .outputSQLResult(sqlService.executeGetUsuario(username))
-              .build();
+      BackendResponse<?> response = sqlService.executeGetUsuario(username);
 
-      return ResponseEntity.status(HttpStatus.OK).body(response);
+      return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
     } catch (Exception e) {
 
       ExceptionResponse exceptionResponse = configService.selectedException(e, "SQL");
@@ -550,12 +513,9 @@ public class SqlController {
       }
       Long generoId = bodyRequest.getGeneroId();
 
-      GetPeliculasAllOkResponseResponseDto response =
-          GetPeliculasAllOkResponseResponseDto.builder()
-              .peliculasAll(sqlService.executeGetPeliculasAll(generoId))
-              .build();
+      BackendResponse<?> response = sqlService.executeGetPeliculasAll(generoId);
 
-      return ResponseEntity.status(HttpStatus.OK).body(response);
+      return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
     } catch (Exception e) {
 
       ExceptionResponse exceptionResponse = configService.selectedException(e, "SQL");
@@ -589,12 +549,9 @@ public class SqlController {
       }
       Long generoId = bodyRequest.getGeneroId();
 
-      GetPeliculasMenor5OkResponseResponseDto response =
-          GetPeliculasMenor5OkResponseResponseDto.builder()
-              .outputSQLResult(sqlService.executeGetPeliculasMenor5(generoId))
-              .build();
+      BackendResponse<?> response = sqlService.executeGetPeliculasMenor5(generoId);
 
-      return ResponseEntity.status(HttpStatus.OK).body(response);
+      return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
     } catch (Exception e) {
 
       ExceptionResponse exceptionResponse = configService.selectedException(e, "SQL");
@@ -628,12 +585,9 @@ public class SqlController {
       }
       Long generoId = bodyRequest.getGeneroId();
 
-      GetPeliculasMayor18OkResponseResponseDto response =
-          GetPeliculasMayor18OkResponseResponseDto.builder()
-              .outputSQLResult(sqlService.executeGetPeliculasMayor18(generoId))
-              .build();
+      BackendResponse<?> response = sqlService.executeGetPeliculasMayor18(generoId);
 
-      return ResponseEntity.status(HttpStatus.OK).body(response);
+      return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
     } catch (Exception e) {
 
       ExceptionResponse exceptionResponse = configService.selectedException(e, "SQL");
@@ -655,12 +609,9 @@ public class SqlController {
 
     try {
 
-      GetSeriesMenor5OkResponseResponseDto response =
-          GetSeriesMenor5OkResponseResponseDto.builder()
-              .outputSQLResult(sqlService.executeGetSeriesMenor5())
-              .build();
+      BackendResponse<?> response = sqlService.executeGetSeriesMenor5();
 
-      return ResponseEntity.status(HttpStatus.OK).body(response);
+      return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
     } catch (Exception e) {
 
       ExceptionResponse exceptionResponse = configService.selectedException(e, "SQL");
@@ -682,12 +633,9 @@ public class SqlController {
 
     try {
 
-      GetSeriesMenor5Hasta18OkResponseResponseDto response =
-          GetSeriesMenor5Hasta18OkResponseResponseDto.builder()
-              .outputSQLResult(sqlService.executeGetSeriesMenor5Hasta18())
-              .build();
+      BackendResponse<?> response = sqlService.executeGetSeriesMenor5Hasta18();
 
-      return ResponseEntity.status(HttpStatus.OK).body(response);
+      return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
     } catch (Exception e) {
 
       ExceptionResponse exceptionResponse = configService.selectedException(e, "SQL");
@@ -709,12 +657,9 @@ public class SqlController {
 
     try {
 
-      GetSeriesMayor18OkResponseResponseDto response =
-          GetSeriesMayor18OkResponseResponseDto.builder()
-              .outputSQLResult(sqlService.executeGetSeriesMayor18())
-              .build();
+      BackendResponse<?> response = sqlService.executeGetSeriesMayor18();
 
-      return ResponseEntity.status(HttpStatus.OK).body(response);
+      return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
     } catch (Exception e) {
 
       ExceptionResponse exceptionResponse = configService.selectedException(e, "SQL");
@@ -842,12 +787,9 @@ public class SqlController {
 
     try {
 
-      GetTitulosOkResponseResponseDto response =
-          GetTitulosOkResponseResponseDto.builder()
-              .outputSQLResult(sqlService.executeGetTitulos())
-              .build();
+      BackendResponse<?> response = sqlService.executeGetTitulos();
 
-      return ResponseEntity.status(HttpStatus.OK).body(response);
+      return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
     } catch (Exception e) {
 
       ExceptionResponse exceptionResponse = configService.selectedException(e, "SQL");
@@ -869,12 +811,9 @@ public class SqlController {
 
     try {
 
-      GetUsuariosOkResponseResponseDto response =
-          GetUsuariosOkResponseResponseDto.builder()
-              .usuarios(sqlService.executeGetUsuarios())
-              .build();
+      BackendResponse<?> response = sqlService.executeGetUsuarios();
 
-      return ResponseEntity.status(HttpStatus.OK).body(response);
+      return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
     } catch (Exception e) {
 
       ExceptionResponse exceptionResponse = configService.selectedException(e, "SQL");
@@ -978,12 +917,9 @@ public class SqlController {
       }
       String username = bodyRequest.getUsername();
 
-      GetUsuarioTransOkResponseResponseDto response =
-          GetUsuarioTransOkResponseResponseDto.builder()
-              .outputSQLResult(sqlService.executeGetUsuarioTrans(username))
-              .build();
+      BackendResponse<?> response = sqlService.executeGetUsuarioTrans(username);
 
-      return ResponseEntity.status(HttpStatus.OK).body(response);
+      return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
     } catch (Exception e) {
 
       ExceptionResponse exceptionResponse = configService.selectedException(e, "SQL");
@@ -1059,12 +995,9 @@ public class SqlController {
       }
       Long typeId = bodyRequest.getTypeId();
 
-      ShowProductsOkResponseResponseDto response =
-          ShowProductsOkResponseResponseDto.builder()
-              .products(sqlService.executeShowProducts(typeId))
-              .build();
+      BackendResponse<?> response = sqlService.executeShowProducts(typeId);
 
-      return ResponseEntity.status(HttpStatus.OK).body(response);
+      return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
     } catch (Exception e) {
 
       ExceptionResponse exceptionResponse = configService.selectedException(e, "SQL");
@@ -1086,12 +1019,9 @@ public class SqlController {
 
     try {
 
-      GetGenerosOkResponseResponseDto response =
-          GetGenerosOkResponseResponseDto.builder()
-              .outputSQLResult(sqlService.executeGetGeneros())
-              .build();
+      BackendResponse<?> response = sqlService.executeGetGeneros();
 
-      return ResponseEntity.status(HttpStatus.OK).body(response);
+      return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
     } catch (Exception e) {
 
       ExceptionResponse exceptionResponse = configService.selectedException(e, "SQL");
@@ -1218,10 +1148,9 @@ public class SqlController {
 
     try {
 
-      GetTypesOkResponseResponseDto response =
-          GetTypesOkResponseResponseDto.builder().types(sqlService.executeGetTypes()).build();
+      BackendResponse<?> response = sqlService.executeGetTypes();
 
-      return ResponseEntity.status(HttpStatus.OK).body(response);
+      return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
     } catch (Exception e) {
 
       ExceptionResponse exceptionResponse = configService.selectedException(e, "SQL");
@@ -1289,10 +1218,9 @@ public class SqlController {
       }
       Long typeId = bodyRequest.getTypeId();
 
-      GetTypeOkResponseResponseDto response =
-          GetTypeOkResponseResponseDto.builder().type(sqlService.executeGetType(typeId)).build();
+      BackendResponse<?> response = sqlService.executeGetType(typeId);
 
-      return ResponseEntity.status(HttpStatus.OK).body(response);
+      return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
     } catch (Exception e) {
 
       ExceptionResponse exceptionResponse = configService.selectedException(e, "SQL");
@@ -1552,12 +1480,9 @@ public class SqlController {
 
     try {
 
-      GetListUsuariosOkResponseResponseDto response =
-          GetListUsuariosOkResponseResponseDto.builder()
-              .usuarios(sqlService.executeGetListUsuarios())
-              .build();
+      BackendResponse<?> response = sqlService.executeGetListUsuarios();
 
-      return ResponseEntity.status(HttpStatus.OK).body(response);
+      return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
     } catch (Exception e) {
 
       ExceptionResponse exceptionResponse = configService.selectedException(e, "SQL");

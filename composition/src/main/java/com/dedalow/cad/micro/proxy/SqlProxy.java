@@ -28,6 +28,52 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @FeignClient(name = "sqls")
 public interface SqlProxy {
 
+  @RequestMapping(value = "/insert-usuario-test", method = RequestMethod.POST)
+  public ResponseEntity<?> insertUsuarioTest();
+
+  @RequestMapping(value = "/insert-titulos-test", method = RequestMethod.POST)
+  public ResponseEntity<?> insertTitulosTest();
+
+  @RequestMapping(value = "/insert-genero-test", method = RequestMethod.POST)
+  public ResponseEntity<?> insertGeneroTest();
+
+  @RequestMapping(value = "/insert-product-test", method = RequestMethod.POST)
+  public ResponseEntity<?> insertProductTest();
+
+  @RequestMapping(value = "/insert-type-product-test", method = RequestMethod.POST)
+  public ResponseEntity<?> insertTypeProductTest();
+
+  @RequestMapping(value = "/insert-usuario-trans-test", method = RequestMethod.POST)
+  public ResponseEntity<?> insertUsuarioTransTest();
+
+  @RequestMapping(
+      value = "/get-user-by-username",
+      method = RequestMethod.POST,
+      consumes = "application/json")
+  public ResponseEntity<?> getUserByUsername(
+      @RequestBody GetUserByUsernameBodyRequestDto bodyRequest);
+
+  @RequestMapping(
+      value = "/get-id-by-username",
+      method = RequestMethod.POST,
+      consumes = "application/json")
+  public ResponseEntity<?> getIdByUsername(@RequestBody GetIdByUsernameBodyRequestDto bodyRequest);
+
+  @RequestMapping(
+      value = "/insert-user",
+      method = RequestMethod.POST,
+      consumes = "application/json")
+  public ResponseEntity<?> insertUser(@RequestBody InsertUserBodyRequestDto bodyRequest);
+
+  @RequestMapping(value = "/force-fail", method = RequestMethod.POST, consumes = "application/json")
+  public ResponseEntity<?> forceFail(@RequestBody ForceFailBodyRequestDto bodyRequest);
+
+  @RequestMapping(
+      value = "/get-usuario-trans",
+      method = RequestMethod.POST,
+      consumes = "application/json")
+  public ResponseEntity<?> getUsuarioTrans(@RequestBody GetUsuarioTransBodyRequestDto bodyRequest);
+
   @RequestMapping(value = "/delete-validate-types", method = RequestMethod.POST)
   public ResponseEntity<?> deleteValidateTypes();
 
@@ -37,11 +83,23 @@ public interface SqlProxy {
   @RequestMapping(value = "/delete-validate-list", method = RequestMethod.POST)
   public ResponseEntity<?> deleteValidateList();
 
+  @RequestMapping(value = "/save-price", method = RequestMethod.POST, consumes = "application/json")
+  public ResponseEntity<?> savePrice(@RequestBody SavePriceBodyRequestDto bodyRequest);
+
   @RequestMapping(
       value = "/add-valid-name",
       method = RequestMethod.POST,
       consumes = "application/json")
   public ResponseEntity<?> addValidName(@RequestBody AddValidNameBodyRequestDto bodyRequest);
+
+  @RequestMapping(value = "/get-type", method = RequestMethod.POST, consumes = "application/json")
+  public ResponseEntity<?> getType(@RequestBody GetTypeBodyRequestDto bodyRequest);
+
+  @RequestMapping(
+      value = "/show-products",
+      method = RequestMethod.POST,
+      consumes = "application/json")
+  public ResponseEntity<?> showProducts(@RequestBody ShowProductsBodyRequestDto bodyRequest);
 
   @RequestMapping(value = "/delete-user-test", method = RequestMethod.POST)
   public ResponseEntity<?> deleteUserTest();
@@ -64,8 +122,21 @@ public interface SqlProxy {
   @RequestMapping(value = "/delete-usuario-trans-test", method = RequestMethod.POST)
   public ResponseEntity<?> deleteUsuarioTransTest();
 
+  @RequestMapping(
+      value = "/delete-user",
+      method = RequestMethod.POST,
+      consumes = "application/json")
+  public ResponseEntity<?> deleteUser(@RequestBody DeleteUserBodyRequestDto bodyRequest);
+
   @RequestMapping(value = "/insert-usert-test", method = RequestMethod.POST)
   public ResponseEntity<?> insertUsertTest();
+
+  @RequestMapping(
+      value = "/delete-usuario-trans-by-name",
+      method = RequestMethod.POST,
+      consumes = "application/json")
+  public ResponseEntity<?> deleteUsuarioTransByName(
+      @RequestBody DeleteUsuarioTransByNameBodyRequestDto bodyRequest);
 
   @RequestMapping(
       value = "/get-usuario",
@@ -129,75 +200,4 @@ public interface SqlProxy {
       method = RequestMethod.POST,
       consumes = "application/json")
   public ResponseEntity<?> validateList(@RequestBody ValidateListBodyRequestDto bodyRequest);
-
-  @RequestMapping(value = "/force-fail", method = RequestMethod.POST, consumes = "application/json")
-  public ResponseEntity<?> forceFail(@RequestBody ForceFailBodyRequestDto bodyRequest);
-
-  @RequestMapping(
-      value = "/get-usuario-trans",
-      method = RequestMethod.POST,
-      consumes = "application/json")
-  public ResponseEntity<?> getUsuarioTrans(@RequestBody GetUsuarioTransBodyRequestDto bodyRequest);
-
-  @RequestMapping(value = "/save-price", method = RequestMethod.POST, consumes = "application/json")
-  public ResponseEntity<?> savePrice(@RequestBody SavePriceBodyRequestDto bodyRequest);
-
-  @RequestMapping(value = "/get-type", method = RequestMethod.POST, consumes = "application/json")
-  public ResponseEntity<?> getType(@RequestBody GetTypeBodyRequestDto bodyRequest);
-
-  @RequestMapping(
-      value = "/show-products",
-      method = RequestMethod.POST,
-      consumes = "application/json")
-  public ResponseEntity<?> showProducts(@RequestBody ShowProductsBodyRequestDto bodyRequest);
-
-  @RequestMapping(
-      value = "/delete-user",
-      method = RequestMethod.POST,
-      consumes = "application/json")
-  public ResponseEntity<?> deleteUser(@RequestBody DeleteUserBodyRequestDto bodyRequest);
-
-  @RequestMapping(
-      value = "/delete-usuario-trans-by-name",
-      method = RequestMethod.POST,
-      consumes = "application/json")
-  public ResponseEntity<?> deleteUsuarioTransByName(
-      @RequestBody DeleteUsuarioTransByNameBodyRequestDto bodyRequest);
-
-  @RequestMapping(value = "/insert-usuario-test", method = RequestMethod.POST)
-  public ResponseEntity<?> insertUsuarioTest();
-
-  @RequestMapping(value = "/insert-titulos-test", method = RequestMethod.POST)
-  public ResponseEntity<?> insertTitulosTest();
-
-  @RequestMapping(value = "/insert-genero-test", method = RequestMethod.POST)
-  public ResponseEntity<?> insertGeneroTest();
-
-  @RequestMapping(value = "/insert-product-test", method = RequestMethod.POST)
-  public ResponseEntity<?> insertProductTest();
-
-  @RequestMapping(value = "/insert-type-product-test", method = RequestMethod.POST)
-  public ResponseEntity<?> insertTypeProductTest();
-
-  @RequestMapping(value = "/insert-usuario-trans-test", method = RequestMethod.POST)
-  public ResponseEntity<?> insertUsuarioTransTest();
-
-  @RequestMapping(
-      value = "/get-user-by-username",
-      method = RequestMethod.POST,
-      consumes = "application/json")
-  public ResponseEntity<?> getUserByUsername(
-      @RequestBody GetUserByUsernameBodyRequestDto bodyRequest);
-
-  @RequestMapping(
-      value = "/get-id-by-username",
-      method = RequestMethod.POST,
-      consumes = "application/json")
-  public ResponseEntity<?> getIdByUsername(@RequestBody GetIdByUsernameBodyRequestDto bodyRequest);
-
-  @RequestMapping(
-      value = "/insert-user",
-      method = RequestMethod.POST,
-      consumes = "application/json")
-  public ResponseEntity<?> insertUser(@RequestBody InsertUserBodyRequestDto bodyRequest);
 }

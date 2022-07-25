@@ -8,6 +8,21 @@ import com.dedalow.cad.micro.commons.dto.pojo.AllExternalCodesEcJoinPeliculasInP
 import com.dedalow.cad.micro.commons.dto.pojo.AllExternalCodesEcJoinPeliculasOutPeliculasDataDto;
 import com.dedalow.cad.micro.commons.dto.pojo.AllExternalCodesEcValidateTypesInTypeListDataDto;
 import com.dedalow.cad.micro.commons.dto.pojo.AllExternalCodesEcValidateTypesInTypeObjectDto;
+import com.dedalow.cad.micro.commons.dto.response.AllExternalCodesEcAddGenerosOkResponseResponseDto;
+import com.dedalow.cad.micro.commons.dto.response.AllExternalCodesEcCastDecimalOkResponseResponseDto;
+import com.dedalow.cad.micro.commons.dto.response.AllExternalCodesEcCastIntegerOkResponseResponseDto;
+import com.dedalow.cad.micro.commons.dto.response.AllExternalCodesEcCastLongOkResponseResponseDto;
+import com.dedalow.cad.micro.commons.dto.response.AllExternalCodesEcCastStringOkResponseResponseDto;
+import com.dedalow.cad.micro.commons.dto.response.AllExternalCodesEcChangeValueOkResponseResponseDto;
+import com.dedalow.cad.micro.commons.dto.response.AllExternalCodesEcGetIntegerValueOkResponseResponseDto;
+import com.dedalow.cad.micro.commons.dto.response.AllExternalCodesEcJoinPeliculasOkResponseResponseDto;
+import com.dedalow.cad.micro.commons.dto.response.AllExternalCodesEcListaPeliculasOkResponseResponseDto;
+import com.dedalow.cad.micro.commons.dto.response.AllExternalCodesEcSumaValoracionOkResponseResponseDto;
+import com.dedalow.cad.micro.commons.dto.response.AllExternalCodesEcSumatorioOkResponseResponseDto;
+import com.dedalow.cad.micro.commons.dto.response.AllExternalCodesEcTestExternalCodeOkResponseResponseDto;
+import com.dedalow.cad.micro.commons.dto.response.AllExternalCodesEcValoracionMediaOkResponseResponseDto;
+import com.dedalow.cad.micro.commons.dto.response.BackendResponse;
+import com.dedalow.cad.micro.commons.dto.response.EmptyResponse;
 import com.dedalow.cad.micro.services.AllExternalCodesEcService;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -17,31 +32,67 @@ import org.springframework.stereotype.Service;
 @Service
 public class AllExternalCodesEcServiceImpl implements AllExternalCodesEcService {
 
-  public List<AllExternalCodesEcAddGenerosOutGenerosDataDto> executeAddGeneros(
+  public BackendResponse<?> executeAddGeneros(
       List<AllExternalCodesEcAddGenerosInPeliculasDataDto> peliculas,
       BigDecimal valoracionMedia,
       List<AllExternalCodesEcAddGenerosInGenerosDataDto> generos,
       String genero) { // TODO Implement method
-    return new ArrayList<AllExternalCodesEcAddGenerosOutGenerosDataDto>();
+
+    return BackendResponse.builder()
+        .body(
+            AllExternalCodesEcAddGenerosOkResponseResponseDto.builder()
+                .generos(new ArrayList<AllExternalCodesEcAddGenerosOutGenerosDataDto>())
+                .build())
+        .isOk(true)
+        .statusCode(200)
+        .build();
   }
 
-  public String executeCastDecimal(BigDecimal inputValue) { // TODO Implement method
-    return null;
+  public BackendResponse<?> executeCastDecimal(BigDecimal inputValue) { // TODO Implement method
+
+    return BackendResponse.builder()
+        .body(
+            AllExternalCodesEcCastDecimalOkResponseResponseDto.builder().outputValue(null).build())
+        .isOk(true)
+        .statusCode(200)
+        .build();
   }
 
-  public Integer executeGetIntegerValue() { // TODO Implement method
-    return null;
+  public BackendResponse<?> executeGetIntegerValue() { // TODO Implement method
+
+    return BackendResponse.builder()
+        .body(
+            AllExternalCodesEcGetIntegerValueOkResponseResponseDto.builder()
+                .outputValue(null)
+                .build())
+        .isOk(true)
+        .statusCode(200)
+        .build();
   }
 
-  public String executeTestExternalCode(String username) { // TODO Implement method
-    return null;
+  public BackendResponse<?> executeTestExternalCode(String username) { // TODO Implement method
+
+    return BackendResponse.builder()
+        .body(
+            AllExternalCodesEcTestExternalCodeOkResponseResponseDto.builder()
+                .username(null)
+                .build())
+        .isOk(true)
+        .statusCode(200)
+        .build();
   }
 
-  public Integer executeSumatorio(Integer sumatorio, Integer iterate) { // TODO Implement method
-    return null;
+  public BackendResponse<?> executeSumatorio(
+      Integer sumatorio, Integer iterate) { // TODO Implement method
+
+    return BackendResponse.builder()
+        .body(AllExternalCodesEcSumatorioOkResponseResponseDto.builder().sumatorio(null).build())
+        .isOk(true)
+        .statusCode(200)
+        .build();
   }
 
-  public void executeValidateTypes(
+  public BackendResponse<?> executeValidateTypes(
       Boolean typeBoolean,
       BigDecimal typeDecimal,
       Integer typeInteger,
@@ -51,51 +102,112 @@ public class AllExternalCodesEcServiceImpl implements AllExternalCodesEcService 
       AllExternalCodesEcValidateTypesInTypeObjectDto typeObject,
       String typePassword,
       String typeString) { // TODO Implement method
+
+    return BackendResponse.builder().body(new EmptyResponse()).isOk(true).statusCode(200).build();
   }
 
-  public Integer executeChangeValue() { // TODO Implement method
-    return null;
+  public BackendResponse<?> executeChangeValue() { // TODO Implement method
+
+    return BackendResponse.builder()
+        .body(AllExternalCodesEcChangeValueOkResponseResponseDto.builder().value(null).build())
+        .isOk(true)
+        .statusCode(200)
+        .build();
   }
 
-  public void executeChangeVar(Integer var) { // TODO Implement method
+  public BackendResponse<?> executeChangeVar(Integer var) { // TODO Implement method
+
+    return BackendResponse.builder().body(new EmptyResponse()).isOk(true).statusCode(200).build();
   }
 
-  public String executeCastInteger(Integer inputValue) { // TODO Implement method
-    return null;
+  public BackendResponse<?> executeCastInteger(Integer inputValue) { // TODO Implement method
+
+    return BackendResponse.builder()
+        .body(
+            AllExternalCodesEcCastIntegerOkResponseResponseDto.builder().outputValue(null).build())
+        .isOk(true)
+        .statusCode(200)
+        .build();
   }
 
-  public void executeEmptyExternal(Integer typeValue) { // TODO Implement method
+  public BackendResponse<?> executeEmptyExternal(Integer typeValue) { // TODO Implement method
+
+    return BackendResponse.builder().body(new EmptyResponse()).isOk(true).statusCode(200).build();
   }
 
-  public void executeRollbackChangeVar(Integer var) { // TODO Implement method
+  public BackendResponse<?> executeRollbackChangeVar(Integer var) { // TODO Implement method
+
+    return BackendResponse.builder().body(new EmptyResponse()).isOk(true).statusCode(200).build();
   }
 
-  public List<AllExternalCodesEcJoinPeliculasOutPeliculasDataDto> executeJoinPeliculas(
+  public BackendResponse<?> executeJoinPeliculas(
       List<AllExternalCodesEcJoinPeliculasInPeliculasDataDto> peliculas,
       List<AllExternalCodesEcJoinPeliculasInPeliculasAllDataDto>
           peliculasAll) { // TODO Implement method
-    return new ArrayList<AllExternalCodesEcJoinPeliculasOutPeliculasDataDto>();
+
+    return BackendResponse.builder()
+        .body(
+            AllExternalCodesEcJoinPeliculasOkResponseResponseDto.builder()
+                .peliculas(new ArrayList<AllExternalCodesEcJoinPeliculasOutPeliculasDataDto>())
+                .build())
+        .isOk(true)
+        .statusCode(200)
+        .build();
   }
 
-  public String executeCastLong(Long inputValue) { // TODO Implement method
-    return null;
+  public BackendResponse<?> executeCastLong(Long inputValue) { // TODO Implement method
+
+    return BackendResponse.builder()
+        .body(AllExternalCodesEcCastLongOkResponseResponseDto.builder().outputValue(null).build())
+        .isOk(true)
+        .statusCode(200)
+        .build();
   }
 
-  public List<String> executeListaPeliculas() { // TODO Implement method
-    return new ArrayList<String>();
+  public BackendResponse<?> executeListaPeliculas() { // TODO Implement method
+
+    return BackendResponse.builder()
+        .body(
+            AllExternalCodesEcListaPeliculasOkResponseResponseDto.builder()
+                .peliculaslist(new ArrayList<String>())
+                .build())
+        .isOk(true)
+        .statusCode(200)
+        .build();
   }
 
-  public Integer executeSumaValoracion(
+  public BackendResponse<?> executeSumaValoracion(
       Integer valoracion, Integer valoracionElementos) { // TODO Implement method
-    return null;
+
+    return BackendResponse.builder()
+        .body(
+            AllExternalCodesEcSumaValoracionOkResponseResponseDto.builder()
+                .valoracion(null)
+                .build())
+        .isOk(true)
+        .statusCode(200)
+        .build();
   }
 
-  public String executeCastString(String inputValue) { // TODO Implement method
-    return null;
+  public BackendResponse<?> executeCastString(String inputValue) { // TODO Implement method
+
+    return BackendResponse.builder()
+        .body(AllExternalCodesEcCastStringOkResponseResponseDto.builder().outputValue(null).build())
+        .isOk(true)
+        .statusCode(200)
+        .build();
   }
 
-  public BigDecimal executeValoracionMedia(
+  public BackendResponse<?> executeValoracionMedia(
       Integer valoracion, List<String> elementos) { // TODO Implement method
-    return null;
+
+    return BackendResponse.builder()
+        .body(
+            AllExternalCodesEcValoracionMediaOkResponseResponseDto.builder()
+                .valoracionMedia(null)
+                .build())
+        .isOk(true)
+        .statusCode(200)
+        .build();
   }
 }

@@ -1,11 +1,17 @@
 package com.dedalow.cad.micro.domain.util;
 
+import com.dedalow.cad.micro.commons.services.EncodeService;
 import com.dedalow.cad.micro.domain.internal.*;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class TypeProductEntityConverter {
+
+  private static EncodeService encodeService;
 
   public static com.dedalow.cad.micro.commons.model.TypeProduct convertToModel(
       TypeProduct typeProduct) {
@@ -93,5 +99,10 @@ public class TypeProductEntityConverter {
       typeProductEntityList.add(convertToEntityWithRelations(typeProduct));
     }
     return typeProductEntityList;
+  }
+
+  @Autowired
+  public void setEncodeService(EncodeService encodeService) {
+    TypeProductEntityConverter.encodeService = encodeService;
   }
 }

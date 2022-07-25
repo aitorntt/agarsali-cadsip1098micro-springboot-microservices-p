@@ -7,7 +7,6 @@ import com.dedalow.cad.micro.commons.exception.CadException;
 import com.dedalow.cad.micro.mapper.SqlMapper;
 import com.dedalow.cad.micro.services.LoadDataBcService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,94 +17,166 @@ public class LoadDataBcServiceImpl implements LoadDataBcService {
   @Override
   public BackendResponse<?> executeLoadDatabase() throws CadException {
 
+    BackendResponse<?> _backendResponse = null;
+
     try {
 
-      sqlService.executeDeleteUserTest();
+      _backendResponse = sqlService.executeDeleteUserTest();
+      if (!_backendResponse.isOk()) {
+        throw new CadException(_backendResponse.getMessage());
+      } else {
+
+      }
 
     } catch (Exception e) {
     }
     try {
 
-      sqlService.executeDeleteUsuarioTest();
+      _backendResponse = sqlService.executeDeleteUsuarioTest();
+      if (!_backendResponse.isOk()) {
+        throw new CadException(_backendResponse.getMessage());
+      } else {
+
+      }
 
     } catch (Exception e) {
     }
     try {
 
-      sqlService.executeDeleteTitulosTest();
+      _backendResponse = sqlService.executeDeleteTitulosTest();
+      if (!_backendResponse.isOk()) {
+        throw new CadException(_backendResponse.getMessage());
+      } else {
+
+      }
 
     } catch (Exception e) {
     }
     try {
 
-      sqlService.executeDeleteGeneroTest();
+      _backendResponse = sqlService.executeDeleteGeneroTest();
+      if (!_backendResponse.isOk()) {
+        throw new CadException(_backendResponse.getMessage());
+      } else {
+
+      }
 
     } catch (Exception e) {
     }
     try {
 
-      sqlService.executeDeleteProductTest();
+      _backendResponse = sqlService.executeDeleteProductTest();
+      if (!_backendResponse.isOk()) {
+        throw new CadException(_backendResponse.getMessage());
+      } else {
+
+      }
 
     } catch (Exception e) {
     }
     try {
 
-      sqlService.executeDeleteTypeProductTest();
+      _backendResponse = sqlService.executeDeleteTypeProductTest();
+      if (!_backendResponse.isOk()) {
+        throw new CadException(_backendResponse.getMessage());
+      } else {
+
+      }
 
     } catch (Exception e) {
     }
     try {
 
-      sqlService.executeDeleteUsuarioTransTest();
+      _backendResponse = sqlService.executeDeleteUsuarioTransTest();
+      if (!_backendResponse.isOk()) {
+        throw new CadException(_backendResponse.getMessage());
+      } else {
+
+      }
 
     } catch (Exception e) {
     }
     try {
 
-      sqlService.executeInsertUsertTest();
+      _backendResponse = sqlService.executeInsertUsertTest();
+      if (!_backendResponse.isOk()) {
+        throw new CadException(_backendResponse.getMessage());
+      } else {
+
+      }
 
     } catch (Exception e) {
     }
     try {
 
-      sqlService.executeInsertUsuarioTest();
+      _backendResponse = sqlService.executeInsertUsuarioTest();
+      if (!_backendResponse.isOk()) {
+        throw new CadException(_backendResponse.getMessage());
+      } else {
+
+      }
 
     } catch (Exception e) {
     }
     try {
 
-      sqlService.executeInsertTitulosTest();
+      _backendResponse = sqlService.executeInsertTitulosTest();
+      if (!_backendResponse.isOk()) {
+        throw new CadException(_backendResponse.getMessage());
+      } else {
+
+      }
 
     } catch (Exception e) {
     }
     try {
 
-      sqlService.executeInsertGeneroTest();
+      _backendResponse = sqlService.executeInsertGeneroTest();
+      if (!_backendResponse.isOk()) {
+        throw new CadException(_backendResponse.getMessage());
+      } else {
+
+      }
 
     } catch (Exception e) {
     }
     try {
 
-      sqlService.executeInsertProductTest();
+      _backendResponse = sqlService.executeInsertProductTest();
+      if (!_backendResponse.isOk()) {
+        throw new CadException(_backendResponse.getMessage());
+      } else {
+
+      }
 
     } catch (Exception e) {
     }
     try {
 
-      sqlService.executeInsertTypeProductTest();
+      _backendResponse = sqlService.executeInsertTypeProductTest();
+      if (!_backendResponse.isOk()) {
+        throw new CadException(_backendResponse.getMessage());
+      } else {
+
+      }
 
     } catch (Exception e) {
     }
     try {
 
-      sqlService.executeInsertUsuarioTransTest();
+      _backendResponse = sqlService.executeInsertUsuarioTransTest();
+      if (!_backendResponse.isOk()) {
+        throw new CadException(_backendResponse.getMessage());
+      } else {
+
+      }
 
     } catch (Exception e) {
     }
     return BackendResponse.builder()
         .body(LoadDataBcLoadDatabaseOkResponseResponseDto.builder().build())
         .isOk(true)
-        .statusCode(HttpStatus.OK.value())
+        .statusCode(200)
         .build();
   }
 }

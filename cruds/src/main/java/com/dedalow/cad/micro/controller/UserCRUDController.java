@@ -4,10 +4,7 @@ import com.dedalow.cad.micro.commons.dto.request.AddUserCrudCRUDBodyRequestDto;
 import com.dedalow.cad.micro.commons.dto.request.DeleteUserCrudCRUDBodyRequestDto;
 import com.dedalow.cad.micro.commons.dto.request.GetUserCRUDPathVariableRequestDto;
 import com.dedalow.cad.micro.commons.dto.request.UpdateUserCRUDBodyRequestDto;
-import com.dedalow.cad.micro.commons.dto.response.AddUserCrudCRUDOkResponseResponseDto;
-import com.dedalow.cad.micro.commons.dto.response.GetAllUsersCRUDOkResponseResponseDto;
-import com.dedalow.cad.micro.commons.dto.response.GetUserCRUDOkResponseResponseDto;
-import com.dedalow.cad.micro.commons.dto.response.UpdateUserCRUDOkResponseResponseDto;
+import com.dedalow.cad.micro.commons.dto.response.BackendResponse;
 import com.dedalow.cad.micro.commons.exception.CadException;
 import com.dedalow.cad.micro.commons.exception.ExceptionResponse;
 import com.dedalow.cad.micro.commons.model.User;
@@ -37,12 +34,13 @@ public class UserCRUDController {
 
   @Autowired private UserCRUDService userCRUDService;
 
-  @RequestMapping(value = "/getUser/{id:.*}", method = RequestMethod.GET)
-  public ResponseEntity<?> getUser(GetUserCRUDPathVariableRequestDto pathRequest) {
+  @RequestMapping(value = "/deleteUserCrud", method = RequestMethod.DELETE)
+  public ResponseEntity<?> deleteUserCrud(
+      @RequestBody DeleteUserCrudCRUDBodyRequestDto bodyRequest) {
 
     try {
       List<String> errorParams = new ArrayList<String>();
-      if (Objects.isNull(pathRequest.getId())) {
+      if (Objects.isNull(bodyRequest.getId())) {
         errorParams.add("id");
       }
       if (!errorParams.isEmpty()) {
@@ -51,14 +49,71 @@ public class UserCRUDController {
                 + StringUtils.collectionToDelimitedString(errorParams, ", ")
                 + " are required");
       }
-      Long id = pathRequest.getId();
+      Long id = bodyRequest.getId();
 
-      GetUserCRUDOkResponseResponseDto response =
-          GetUserCRUDOkResponseResponseDto.builder()
-              .outputDomainEntity(userCRUDService.executeGetUser(id))
-              .build();
+      userCRUDService.executeDeleteUserCrud(id);
 
-      return ResponseEntity.status(HttpStatus.OK).body(response);
+      return new ResponseEntity(HttpStatus.OK);
+    } catch (Exception e) {
+
+      ExceptionResponse exceptionResponse = configService.selectedException(e, "CRUD");
+      exceptionResponse.setCode(
+          StringUtils.hasText(exceptionResponse.getCode()) ? exceptionResponse.getCode() : null);
+      exceptionResponse.setMessage(
+          StringUtils.hasText(exceptionResponse.getMessage())
+              ? exceptionResponse.getMessage()
+              : null);
+      log.error(
+          exceptionResponse.getCode() + " - " + exceptionResponse.getMessage(), exceptionResponse);
+
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionResponse);
+    }
+  }
+
+  @RequestMapping(value = "/getAllUsers", method = RequestMethod.GET)
+  public ResponseEntity<?> getAllUsers() {
+
+    try {
+
+      BackendResponse<?> response = userCRUDService.executeGetAllUsers();
+
+      return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
+    } catch (Exception e) {
+
+      ExceptionResponse exceptionResponse = configService.selectedException(e, "CRUD");
+      exceptionResponse.setCode(
+          StringUtils.hasText(exceptionResponse.getCode()) ? exceptionResponse.getCode() : null);
+      exceptionResponse.setMessage(
+          StringUtils.hasText(exceptionResponse.getMessage())
+              ? exceptionResponse.getMessage()
+              : null);
+      log.error(
+          exceptionResponse.getCode() + " - " + exceptionResponse.getMessage(), exceptionResponse);
+
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionResponse);
+    }
+  }
+
+  @RequestMapping(value = "/addUserCrud", method = RequestMethod.POST)
+  public ResponseEntity<?> addUserCrud(@RequestBody AddUserCrudCRUDBodyRequestDto bodyRequest) {
+
+    try {
+      List<String> errorParams = new ArrayList<String>();
+      if (Objects.isNull(bodyRequest.getInputDomain())) {
+        errorParams.add("inputDomain");
+      }
+      if (!errorParams.isEmpty()) {
+        throw new CadException(
+            "Params "
+                + StringUtils.collectionToDelimitedString(errorParams, ", ")
+                + " are required");
+      }
+
+      User inputDomain = bodyRequest.getInputDomain();
+
+      BackendResponse<?> response = userCRUDService.executeAddUserCrud(inputDomain);
+
+      return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
     } catch (Exception e) {
 
       ExceptionResponse exceptionResponse = configService.selectedException(e, "CRUD");
@@ -96,12 +151,9 @@ public class UserCRUDController {
 
       User inputDomain = bodyRequest.getInputDomain();
 
-      UpdateUserCRUDOkResponseResponseDto response =
-          UpdateUserCRUDOkResponseResponseDto.builder()
-              .outputDomainEntity(userCRUDService.executeUpdateUser(id, inputDomain))
-              .build();
+      BackendResponse<?> response = userCRUDService.executeUpdateUser(id, inputDomain);
 
-      return ResponseEntity.status(HttpStatus.OK).body(response);
+      return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
     } catch (Exception e) {
 
       ExceptionResponse exceptionResponse = configService.selectedException(e, "CRUD");
@@ -118,79 +170,12 @@ public class UserCRUDController {
     }
   }
 
-  @RequestMapping(value = "/addUserCrud", method = RequestMethod.POST)
-  public ResponseEntity<?> addUserCrud(@RequestBody AddUserCrudCRUDBodyRequestDto bodyRequest) {
+  @RequestMapping(value = "/getUser/{id:.*}", method = RequestMethod.GET)
+  public ResponseEntity<?> getUser(GetUserCRUDPathVariableRequestDto pathRequest) {
 
     try {
       List<String> errorParams = new ArrayList<String>();
-      if (Objects.isNull(bodyRequest.getInputDomain())) {
-        errorParams.add("inputDomain");
-      }
-      if (!errorParams.isEmpty()) {
-        throw new CadException(
-            "Params "
-                + StringUtils.collectionToDelimitedString(errorParams, ", ")
-                + " are required");
-      }
-
-      User inputDomain = bodyRequest.getInputDomain();
-
-      AddUserCrudCRUDOkResponseResponseDto response =
-          AddUserCrudCRUDOkResponseResponseDto.builder()
-              .outputDomainEntity(userCRUDService.executeAddUserCrud(inputDomain))
-              .build();
-
-      return ResponseEntity.status(HttpStatus.OK).body(response);
-    } catch (Exception e) {
-
-      ExceptionResponse exceptionResponse = configService.selectedException(e, "CRUD");
-      exceptionResponse.setCode(
-          StringUtils.hasText(exceptionResponse.getCode()) ? exceptionResponse.getCode() : null);
-      exceptionResponse.setMessage(
-          StringUtils.hasText(exceptionResponse.getMessage())
-              ? exceptionResponse.getMessage()
-              : null);
-      log.error(
-          exceptionResponse.getCode() + " - " + exceptionResponse.getMessage(), exceptionResponse);
-
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionResponse);
-    }
-  }
-
-  @RequestMapping(value = "/getAllUsers", method = RequestMethod.GET)
-  public ResponseEntity<?> getAllUsers() {
-
-    try {
-
-      GetAllUsersCRUDOkResponseResponseDto response =
-          GetAllUsersCRUDOkResponseResponseDto.builder()
-              .outputDomainEntityList(userCRUDService.executeGetAllUsers())
-              .build();
-
-      return ResponseEntity.status(HttpStatus.OK).body(response);
-    } catch (Exception e) {
-
-      ExceptionResponse exceptionResponse = configService.selectedException(e, "CRUD");
-      exceptionResponse.setCode(
-          StringUtils.hasText(exceptionResponse.getCode()) ? exceptionResponse.getCode() : null);
-      exceptionResponse.setMessage(
-          StringUtils.hasText(exceptionResponse.getMessage())
-              ? exceptionResponse.getMessage()
-              : null);
-      log.error(
-          exceptionResponse.getCode() + " - " + exceptionResponse.getMessage(), exceptionResponse);
-
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionResponse);
-    }
-  }
-
-  @RequestMapping(value = "/deleteUserCrud", method = RequestMethod.DELETE)
-  public ResponseEntity<?> deleteUserCrud(
-      @RequestBody DeleteUserCrudCRUDBodyRequestDto bodyRequest) {
-
-    try {
-      List<String> errorParams = new ArrayList<String>();
-      if (Objects.isNull(bodyRequest.getId())) {
+      if (Objects.isNull(pathRequest.getId())) {
         errorParams.add("id");
       }
       if (!errorParams.isEmpty()) {
@@ -199,11 +184,11 @@ public class UserCRUDController {
                 + StringUtils.collectionToDelimitedString(errorParams, ", ")
                 + " are required");
       }
-      Long id = bodyRequest.getId();
+      Long id = pathRequest.getId();
 
-      userCRUDService.executeDeleteUserCrud(id);
+      BackendResponse<?> response = userCRUDService.executeGetUser(id);
 
-      return new ResponseEntity(HttpStatus.OK);
+      return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
     } catch (Exception e) {
 
       ExceptionResponse exceptionResponse = configService.selectedException(e, "CRUD");

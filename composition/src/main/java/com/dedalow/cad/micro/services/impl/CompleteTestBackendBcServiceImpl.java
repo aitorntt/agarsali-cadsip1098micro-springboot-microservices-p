@@ -3,14 +3,21 @@ package com.dedalow.cad.micro.services.impl;
 import com.dedalow.cad.micro.commons.dto.pojo.CompleteTestBackendBcCompleteBackendExampleOutDataDto;
 import com.dedalow.cad.micro.commons.dto.pojo.GetIdByUsernameOutOutputSQLResultDto;
 import com.dedalow.cad.micro.commons.dto.pojo.GetUserByUsernameOutOutputSQLResultDto;
+import com.dedalow.cad.micro.commons.dto.response.AddUserCrudCRUDOkResponseResponseDto;
+import com.dedalow.cad.micro.commons.dto.response.AllExternalCodesEcTestExternalCodeOkResponseResponseDto;
 import com.dedalow.cad.micro.commons.dto.response.BackendResponse;
 import com.dedalow.cad.micro.commons.dto.response.CompleteTestBackendBcAddUserOkResponseResponseDto;
 import com.dedalow.cad.micro.commons.dto.response.CompleteTestBackendBcCompleteBackendExampleOkResponseResponseDto;
 import com.dedalow.cad.micro.commons.dto.response.CompleteTestBackendBcCrudsOkResponseResponseDto;
 import com.dedalow.cad.micro.commons.dto.response.CompleteTestBackendBcCustomsAndRestOkResponseResponseDto;
+import com.dedalow.cad.micro.commons.dto.response.GetAllUsersCRUDOkResponseResponseDto;
+import com.dedalow.cad.micro.commons.dto.response.GetIdByUsernameOkResponseResponseDto;
+import com.dedalow.cad.micro.commons.dto.response.GetUserByUsernameOkResponseResponseDto;
+import com.dedalow.cad.micro.commons.dto.response.GetUserCRUDOkResponseResponseDto;
 import com.dedalow.cad.micro.commons.dto.response.SmartRiLoginOkResponseDto;
 import com.dedalow.cad.micro.commons.dto.response.SmartRiUserDetailOkResponseDto;
 import com.dedalow.cad.micro.commons.dto.response.TestOtherCompositionBcTestOtherCompositionOkResponseResponseDto;
+import com.dedalow.cad.micro.commons.dto.response.UpdateUserCRUDOkResponseResponseDto;
 import com.dedalow.cad.micro.commons.exception.CadException;
 import com.dedalow.cad.micro.commons.model.User;
 import com.dedalow.cad.micro.commons.util.ObjectMapperUtil;
@@ -24,7 +31,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -51,40 +57,62 @@ public class CompleteTestBackendBcServiceImpl implements CompleteTestBackendBcSe
 
     try {
 
-      bc3 = allExternalCodesEcService.executeTestExternalCode(username);
+      _backendResponse = allExternalCodesEcService.executeTestExternalCode(username);
+
+      if (!_backendResponse.isOk()) {
+        throw new CadException(_backendResponse.getMessage());
+      } else {
+        bc3 =
+            ObjectMapperUtil.convertValue(
+                    _backendResponse.getBody(),
+                    new TypeReference<AllExternalCodesEcTestExternalCodeOkResponseResponseDto>() {})
+                .getUsername();
+      }
 
     } catch (Exception e) {
     }
     try {
 
-      op1 = sqlService.executeGetUserByUsername(bc3);
+      _backendResponse = sqlService.executeGetUserByUsername(bc3);
+
+      if (!_backendResponse.isOk()) {
+        throw new CadException(_backendResponse.getMessage());
+      } else {
+        op1 =
+            ObjectMapperUtil.convertValue(
+                    _backendResponse.getBody(),
+                    new TypeReference<GetUserByUsernameOkResponseResponseDto>() {})
+                .getOutputSQLResult();
+      }
 
     } catch (Exception e) {
     }
     try {
+
       _backendResponse = smartRiService.executeLogin(op1.getUsername(), op1.getPassword());
 
       if (!_backendResponse.isOk()) {
         throw new CadException(_backendResponse.getMessage());
       } else {
-
         op2 =
             ObjectMapperUtil.convertValue(
                 _backendResponse.getBody(), new TypeReference<SmartRiLoginOkResponseDto>() {});
       }
+
     } catch (Exception e) {
     }
     try {
+
       _backendResponse = smartRiService.executeUserDetail(op2.getToken(), op1.getUsername());
 
       if (!_backendResponse.isOk()) {
         throw new CadException(_backendResponse.getMessage());
       } else {
-
         op3 =
             ObjectMapperUtil.convertValue(
                 _backendResponse.getBody(), new TypeReference<SmartRiUserDetailOkResponseDto>() {});
       }
+
     } catch (Exception e) {
       throw new CadException("ERR-COMP-001", e.getCause());
     }
@@ -97,85 +125,106 @@ public class CompleteTestBackendBcServiceImpl implements CompleteTestBackendBcSe
                 .surnames(op3.getSurnames())
                 .build())
         .isOk(true)
-        .statusCode(HttpStatus.OK.value())
+        .statusCode(200)
         .build();
   }
 
   @Override
   public BackendResponse<?> executeCompleteBackendExample(String username) throws CadException {
 
-    TestOtherCompositionBcTestOtherCompositionOkResponseResponseDto ca1 = null;
-
-    CompleteTestBackendBcAddUserOkResponseResponseDto ca2 = null;
+    String ca1 = null;
+    String ca2 = null;
 
     GetIdByUsernameOutOutputSQLResultDto op1 = null;
-
-    CompleteTestBackendBcCrudsOkResponseResponseDto op2 = null;
+    String op2 = null;
 
     CompleteTestBackendBcCustomsAndRestOkResponseResponseDto op3 = null;
     BackendResponse<?> _backendResponse = null;
 
     try {
+
       _backendResponse = testOtherCompositionBcService.executeTestOtherComposition(username);
 
       if (!_backendResponse.isOk()) {
         throw new CadException(_backendResponse.getMessage());
       } else {
-
         ca1 =
             ObjectMapperUtil.convertValue(
-                _backendResponse.getBody(),
-                new TypeReference<
-                    TestOtherCompositionBcTestOtherCompositionOkResponseResponseDto>() {});
+                ObjectMapperUtil.convertValue(
+                        _backendResponse.getBody(),
+                        new TypeReference<
+                            TestOtherCompositionBcTestOtherCompositionOkResponseResponseDto>() {})
+                    .getUsername(),
+                new TypeReference<String>() {});
       }
+
     } catch (Exception e) {
     }
     try {
-      _backendResponse = completeTestBackendBcService.executeAddUser(ca1.getUsername());
+
+      _backendResponse = completeTestBackendBcService.executeAddUser(ca1);
 
       if (!_backendResponse.isOk()) {
         throw new CadException(_backendResponse.getMessage());
       } else {
-
         ca2 =
             ObjectMapperUtil.convertValue(
-                _backendResponse.getBody(),
-                new TypeReference<CompleteTestBackendBcAddUserOkResponseResponseDto>() {});
+                ObjectMapperUtil.convertValue(
+                        _backendResponse.getBody(),
+                        new TypeReference<CompleteTestBackendBcAddUserOkResponseResponseDto>() {})
+                    .getUsername(),
+                new TypeReference<String>() {});
       }
-    } catch (Exception e) {
-    }
-    try {
-
-      op1 = sqlService.executeGetIdByUsername(ca2.getUsername());
 
     } catch (Exception e) {
     }
     try {
+
+      _backendResponse = sqlService.executeGetIdByUsername(ca2);
+
+      if (!_backendResponse.isOk()) {
+        throw new CadException(_backendResponse.getMessage());
+      } else {
+        op1 =
+            ObjectMapperUtil.convertValue(
+                    _backendResponse.getBody(),
+                    new TypeReference<GetIdByUsernameOkResponseResponseDto>() {})
+                .getOutputSQLResult();
+      }
+
+    } catch (Exception e) {
+    }
+    try {
+
       _backendResponse = completeTestBackendBcService.executeCruds(op1.getId());
 
       if (!_backendResponse.isOk()) {
         throw new CadException(_backendResponse.getMessage());
       } else {
-
         op2 =
             ObjectMapperUtil.convertValue(
-                _backendResponse.getBody(),
-                new TypeReference<CompleteTestBackendBcCrudsOkResponseResponseDto>() {});
+                ObjectMapperUtil.convertValue(
+                        _backendResponse.getBody(),
+                        new TypeReference<CompleteTestBackendBcCrudsOkResponseResponseDto>() {})
+                    .getUsername(),
+                new TypeReference<String>() {});
       }
+
     } catch (Exception e) {
     }
     try {
-      _backendResponse = completeTestBackendBcService.executeCustomsAndRest(op2.getUsername());
+
+      _backendResponse = completeTestBackendBcService.executeCustomsAndRest(op2);
 
       if (!_backendResponse.isOk()) {
         throw new CadException(_backendResponse.getMessage());
       } else {
-
         op3 =
             ObjectMapperUtil.convertValue(
                 _backendResponse.getBody(),
                 new TypeReference<CompleteTestBackendBcCustomsAndRestOkResponseResponseDto>() {});
       }
+
     } catch (Exception e) {
       throw new CadException("ERR-COMP-001", e.getCause());
     }
@@ -189,16 +238,24 @@ public class CompleteTestBackendBcServiceImpl implements CompleteTestBackendBcSe
                             CompleteTestBackendBcCompleteBackendExampleOutDataDto>() {}))
                 .build())
         .isOk(true)
-        .statusCode(HttpStatus.OK.value())
+        .statusCode(200)
         .build();
   }
 
   @Override
   public BackendResponse<?> executeAddUser(String username) throws CadException {
 
+    BackendResponse<?> _backendResponse = null;
+
     try {
 
-      sqlService.executeInsertUser(username);
+      _backendResponse = sqlService.executeInsertUser(username);
+
+      if (!_backendResponse.isOk()) {
+        throw new CadException(_backendResponse.getMessage());
+      } else {
+
+      }
 
     } catch (Exception e) {
     }
@@ -206,7 +263,7 @@ public class CompleteTestBackendBcServiceImpl implements CompleteTestBackendBcSe
         .body(
             CompleteTestBackendBcAddUserOkResponseResponseDto.builder().username(username).build())
         .isOk(true)
-        .statusCode(HttpStatus.OK.value())
+        .statusCode(200)
         .build();
   }
 
@@ -219,38 +276,84 @@ public class CompleteTestBackendBcServiceImpl implements CompleteTestBackendBcSe
 
     User op2 = null;
     List<User> op5 = new ArrayList<>();
+    BackendResponse<?> _backendResponse = null;
 
     try {
 
-      op4 = userCRUDService.executeGetUser(id);
+      _backendResponse = userCRUDService.executeGetUser(id);
+
+      if (!_backendResponse.isOk()) {
+        throw new CadException(_backendResponse.getMessage());
+      } else {
+        op4 =
+            ObjectMapperUtil.convertValue(
+                    _backendResponse.getBody(),
+                    new TypeReference<GetUserCRUDOkResponseResponseDto>() {})
+                .getOutputDomainEntity();
+      }
 
     } catch (Exception e) {
     }
     try {
 
-      userCRUDService.executeDeleteUserCrud(op4.getId());
+      _backendResponse = userCRUDService.executeDeleteUserCrud(op4.getId());
+
+      if (!_backendResponse.isOk()) {
+        throw new CadException(_backendResponse.getMessage());
+      } else {
+
+      }
 
     } catch (Exception e) {
     }
     try {
 
-      op3 =
+      _backendResponse =
           userCRUDService.executeAddUserCrud(
               ObjectMapperUtil.convertValue(op4, new TypeReference<User>() {}));
 
+      if (!_backendResponse.isOk()) {
+        throw new CadException(_backendResponse.getMessage());
+      } else {
+        op3 =
+            ObjectMapperUtil.convertValue(
+                    _backendResponse.getBody(),
+                    new TypeReference<AddUserCrudCRUDOkResponseResponseDto>() {})
+                .getOutputDomainEntity();
+      }
+
     } catch (Exception e) {
     }
     try {
 
-      op2 =
+      _backendResponse =
           userCRUDService.executeUpdateUser(
               op3.getId(), ObjectMapperUtil.convertValue(op3, new TypeReference<User>() {}));
 
+      if (!_backendResponse.isOk()) {
+        throw new CadException(_backendResponse.getMessage());
+      } else {
+        op2 =
+            ObjectMapperUtil.convertValue(
+                    _backendResponse.getBody(),
+                    new TypeReference<UpdateUserCRUDOkResponseResponseDto>() {})
+                .getOutputDomainEntity();
+      }
+
     } catch (Exception e) {
     }
     try {
 
-      op5 = userCRUDService.executeGetAllUsers();
+      _backendResponse = userCRUDService.executeGetAllUsers();
+      if (!_backendResponse.isOk()) {
+        throw new CadException(_backendResponse.getMessage());
+      } else {
+        op5 =
+            ObjectMapperUtil.convertValue(
+                    _backendResponse.getBody(),
+                    new TypeReference<GetAllUsersCRUDOkResponseResponseDto>() {})
+                .getOutputDomainEntityList();
+      }
 
     } catch (Exception e) {
     }
@@ -260,7 +363,7 @@ public class CompleteTestBackendBcServiceImpl implements CompleteTestBackendBcSe
                 .username(op2.getUsername())
                 .build())
         .isOk(true)
-        .statusCode(HttpStatus.OK.value())
+        .statusCode(200)
         .build();
   }
 }

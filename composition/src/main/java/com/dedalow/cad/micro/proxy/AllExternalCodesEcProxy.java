@@ -17,6 +17,27 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public interface AllExternalCodesEcProxy {
 
   @RequestMapping(
+      value = "/all-external-codes_ec/test-external-code",
+      method = RequestMethod.POST,
+      consumes = "application/json")
+  public ResponseEntity<?> testExternalCode(
+      @RequestBody AllExternalCodesEcTestExternalCodeBodyRequestDto bodyRequest);
+
+  @RequestMapping(
+      value = "/all-external-codes_ec/change-var",
+      method = RequestMethod.POST,
+      consumes = "application/json")
+  public ResponseEntity<?> changeVar(
+      @RequestBody AllExternalCodesEcChangeVarBodyRequestDto bodyRequest);
+
+  @RequestMapping(
+      value = "/all-external-codes_ec/rollback-change-var",
+      method = RequestMethod.POST,
+      consumes = "application/json")
+  public ResponseEntity<?> rollbackChangeVar(
+      @RequestBody AllExternalCodesEcRollbackChangeVarBodyRequestDto bodyRequest);
+
+  @RequestMapping(
       value = "/all-external-codes_ec/validate-types",
       method = RequestMethod.POST,
       consumes = "application/json")
@@ -46,25 +67,4 @@ public interface AllExternalCodesEcProxy {
       consumes = "application/json")
   public ResponseEntity<?> sumatorio(
       @RequestBody AllExternalCodesEcSumatorioBodyRequestDto bodyRequest);
-
-  @RequestMapping(
-      value = "/all-external-codes_ec/change-var",
-      method = RequestMethod.POST,
-      consumes = "application/json")
-  public ResponseEntity<?> changeVar(
-      @RequestBody AllExternalCodesEcChangeVarBodyRequestDto bodyRequest);
-
-  @RequestMapping(
-      value = "/all-external-codes_ec/rollback-change-var",
-      method = RequestMethod.POST,
-      consumes = "application/json")
-  public ResponseEntity<?> rollbackChangeVar(
-      @RequestBody AllExternalCodesEcRollbackChangeVarBodyRequestDto bodyRequest);
-
-  @RequestMapping(
-      value = "/all-external-codes_ec/test-external-code",
-      method = RequestMethod.POST,
-      consumes = "application/json")
-  public ResponseEntity<?> testExternalCode(
-      @RequestBody AllExternalCodesEcTestExternalCodeBodyRequestDto bodyRequest);
 }

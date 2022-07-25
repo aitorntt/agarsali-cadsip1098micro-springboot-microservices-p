@@ -24,6 +24,7 @@ public class SmartRiMapper {
         BackendResponse.builder();
 
     try {
+
       ResponseEntity<?> response = smartRiProxy.login(bodyInput);
 
       backendResponseBuilder.statusCode(response.getStatusCode().value());
@@ -31,6 +32,7 @@ public class SmartRiMapper {
       backendResponseBuilder.body(response.getBody());
 
       return backendResponseBuilder.build();
+
     } catch (FeignException e) {
       try {
         backendResponseBuilder.statusCode(e.status());
@@ -60,6 +62,7 @@ public class SmartRiMapper {
         BackendResponse.builder();
 
     try {
+
       ResponseEntity<?> response = smartRiProxy.userDetail(authorization, username);
 
       backendResponseBuilder.statusCode(response.getStatusCode().value());
@@ -67,6 +70,7 @@ public class SmartRiMapper {
       backendResponseBuilder.body(response.getBody());
 
       return backendResponseBuilder.build();
+
     } catch (FeignException e) {
       try {
         backendResponseBuilder.statusCode(e.status());

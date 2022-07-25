@@ -47,6 +47,7 @@ public class ValidateTypesRestRiMapper {
         BackendResponse.builder();
 
     try {
+
       ResponseEntity<?> response = validateTypesRestRiProxy.microRest(bodyInput);
 
       backendResponseBuilder.statusCode(response.getStatusCode().value());
@@ -54,6 +55,7 @@ public class ValidateTypesRestRiMapper {
       backendResponseBuilder.body(response.getBody());
 
       return backendResponseBuilder.build();
+
     } catch (FeignException e) {
       try {
         backendResponseBuilder.statusCode(e.status());
